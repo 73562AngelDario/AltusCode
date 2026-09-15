@@ -42,18 +42,18 @@
     </div>
     <h1 class="font-serif text-2xl font-semibold mb-1">Panel de administración</h1>
     <p class="text-sm text-ink/60 mb-8">Solo para el equipo de la agencia.</p>
-    <div class="space-y-4">
+    <form id="login-form" class="space-y-4" onsubmit="event.preventDefault(); iniciarSesion();">
       <div>
         <label class="text-sm font-medium text-ink/70">Correo</label>
-        <input id="login-correo" type="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <input id="login-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
       </div>
       <div>
         <label class="text-sm font-medium text-ink/70">Contraseña</label>
-        <input id="login-pass" type="password" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <input id="login-pass" type="password" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
       </div>
       <p id="login-error" class="text-sm text-red-600 hidden"></p>
-      <button onclick="iniciarSesion()" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Entrar</button>
-    </div>
+      <button type="submit" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Entrar</button>
+    </form>
   </div>
 </div>
 
