@@ -116,7 +116,6 @@
             <tr>
               <th class="text-left p-4">Nombre</th>
               <th class="text-left p-4">Correo</th>
-              <th class="text-left p-4">Contraseña</th>
               <th class="text-right p-4">Acciones</th>
             </tr>
           </thead>
@@ -206,8 +205,9 @@
         <input id="nc-correo" type="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Contraseña</label>
+        <label class="text-sm font-medium text-ink/70">Contraseña inicial</label>
         <input id="nc-pass" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <p class="text-xs text-ink/40 mt-1">Se guarda cifrada — dísela al cliente ahora, después ni tú podrás verla. Lo ideal es que el cliente se registre solo desde el sitio.</p>
       </div>
     </div>
     <div class="flex gap-3 mt-6">
@@ -267,7 +267,7 @@
   // ---- CLIENTES ----
   async function cargarClientes() {
     const tbody = document.getElementById('tabla-clientes');
-    tbody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-ink/40">Cargando...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3" class="p-6 text-center text-ink/40">Cargando...</td></tr>';
     try {
       const res = await fetch('/api/clientes');
       clientesCache = await res.json();
@@ -279,13 +279,12 @@
           <tr class="border-t border-ink/5">
             <td class="p-4 font-semibold">${c.nombre}</td>
             <td class="p-4 text-ink/60">${c.correo}</td>
-            <td class="p-4 text-ink/60">${c.password}</td>
             <td class="p-4 text-right"><button onclick="eliminarCliente(${c.id})" class="text-ink/40 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
           </tr>
         `);
       });
       lucide.createIcons();
-    } catch (e) { tbody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-red-500">Error al cargar clientes.</td></tr>'; }
+    } catch (e) { tbody.innerHTML = '<tr><td colspan="3" class="p-6 text-center text-red-500">Error al cargar clientes.</td></tr>'; }
   }
 
   async function crearCliente() {

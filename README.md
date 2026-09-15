@@ -49,10 +49,19 @@ Las tablas se crean solas al arrancar el servidor si no existen:
 |---|---|---|
 | POST | `/api/login-admin` | Login del equipo |
 | POST | `/api/login-cliente` | Login de un cliente |
-| GET/POST/DELETE | `/api/clientes` | Gestionar clientes |
+| POST | `/api/registro-cliente` | El cliente crea su propia cuenta y elige su contraseña |
+| GET/POST/DELETE | `/api/clientes` | Gestionar clientes (el admin puede crear una cuenta con contraseña inicial, pero nunca puede volver a verla) |
 | GET/POST/PUT/DELETE | `/api/proyectos` | Gestionar proyectos (usa `?clienteId=` para filtrar) |
 | POST | `/api/contacto` | Guarda un mensaje del formulario público |
 | GET | `/api/contactos` | Ver mensajes recibidos |
+
+### 🔐 Contraseñas
+
+Las contraseñas de `admins` y `clientes` se guardan **hasheadas con bcrypt**, nunca en texto plano. Ni el admin ni nadie con acceso directo a la base de datos puede leer la contraseña de un cliente — solo se puede verificar si una contraseña coincide al iniciar sesión.
+
+Los clientes pueden registrarse solos desde `dashboard.html#registro` (o desde el link "Crea tu cuenta de cliente" en la página principal), eligiendo ellos mismos su contraseña.
+
+Si ya tenías clientes o el admin creados antes de este cambio (con contraseña en texto plano), no hace falta hacer nada: la primera vez que esa cuenta inicie sesión correctamente, el servidor migra automáticamente su contraseña a un hash.
 
 ---
 

@@ -32,7 +32,7 @@
 </head>
 <body class="antialiased min-h-screen">
 
-<!-- PANTALLA: LOGIN -->
+<!-- PANTALLA: LOGIN / REGISTRO -->
 <div id="pantalla-login" class="min-h-screen flex items-center justify-center p-4">
   <div class="bg-white rounded-3xl shadow-xl w-full max-w-sm p-10 border border-ink/10">
     <div class="flex items-center gap-2 mb-8">
@@ -41,22 +41,60 @@
       </span>
       <span class="font-serif text-xl font-semibold">Núcleo Web</span>
     </div>
-    <h1 class="font-serif text-2xl font-semibold mb-1">Acceso de clientes</h1>
-    <p class="text-sm text-ink/60 mb-8">Consulta el avance de tu proyecto.</p>
-    <form id="login-form" class="space-y-4" onsubmit="event.preventDefault(); iniciarSesion();">
-      <div>
-        <label class="text-sm font-medium text-ink/70">Correo</label>
-        <input id="login-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
-      </div>
-      <div>
-        <label class="text-sm font-medium text-ink/70">Contraseña</label>
-        <input id="login-pass" type="password" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
-      </div>
-      <p id="login-error" class="text-sm text-red-600 hidden"></p>
-      <button type="submit" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Entrar</button>
-    </form>
-    <p class="text-xs text-ink/40 mt-8 text-center">¿No tienes acceso todavía? <a href="index.html#contacto" class="text-teal font-semibold hover:text-teal-dark">Te lo enviamos al iniciar tu proyecto.</a></p>
-    <a href="index.html" class="block text-center text-sm text-teal font-medium mt-4 hover:text-teal-dark">← Volver al sitio</a>
+
+    <div class="flex gap-2 mb-8 bg-paper rounded-full p-1">
+      <button id="tab-entrar" onclick="cambiarTabAcceso('entrar')" class="flex-1 text-sm font-semibold py-2 rounded-full bg-ink text-paper transition-colors">Entrar</button>
+      <button id="tab-registro" onclick="cambiarTabAcceso('registro')" class="flex-1 text-sm font-semibold py-2 rounded-full text-ink/60 transition-colors">Crear cuenta</button>
+    </div>
+
+    <!-- ENTRAR -->
+    <div id="vista-entrar">
+      <h1 class="font-serif text-2xl font-semibold mb-1">Acceso de clientes</h1>
+      <p class="text-sm text-ink/60 mb-8">Consulta el avance de tu proyecto.</p>
+      <form id="login-form" class="space-y-4" onsubmit="event.preventDefault(); iniciarSesion();">
+        <div>
+          <label class="text-sm font-medium text-ink/70">Correo</label>
+          <input id="login-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-ink/70">Contraseña</label>
+          <input id="login-pass" type="password" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        </div>
+        <p id="login-error" class="text-sm text-red-600 hidden"></p>
+        <button type="submit" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Entrar</button>
+      </form>
+      <p class="text-xs text-ink/40 mt-8 text-center">¿Todavía no tienes cuenta? <button type="button" onclick="cambiarTabAcceso('registro')" class="text-teal font-semibold hover:text-teal-dark">Créala aquí</button>.</p>
+    </div>
+
+    <!-- CREAR CUENTA -->
+    <div id="vista-registro" class="hidden">
+      <h1 class="font-serif text-2xl font-semibold mb-1">Crea tu cuenta</h1>
+      <p class="text-sm text-ink/60 mb-8">Elige tú mismo tu contraseña — nadie más la verá.</p>
+      <form id="registro-form" class="space-y-4" onsubmit="event.preventDefault(); registrarse();">
+        <div>
+          <label class="text-sm font-medium text-ink/70">Nombre</label>
+          <input id="registro-nombre" type="text" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-ink/70">Correo</label>
+          <input id="registro-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-ink/70">Contraseña</label>
+          <input id="registro-pass" type="password" required minlength="6" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+          <p class="text-xs text-ink/40 mt-1">Mínimo 6 caracteres.</p>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-ink/70">Confirma tu contraseña</label>
+          <input id="registro-pass2" type="password" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        </div>
+        <p id="registro-error" class="text-sm text-red-600 hidden"></p>
+        <button type="submit" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Crear cuenta</button>
+      </form>
+      <p class="text-xs text-ink/40 mt-8 text-center">¿Ya tienes cuenta? <button type="button" onclick="cambiarTabAcceso('entrar')" class="text-teal font-semibold hover:text-teal-dark">Entra aquí</button>.</p>
+    </div>
+
+    <a href="index.html" class="block text-center text-sm text-teal font-medium mt-6 hover:text-teal-dark">← Volver al sitio</a>
   </div>
 </div>
 
@@ -93,6 +131,64 @@
 <script>
   let sesion = null;
   const ETAPAS = ['Brief', 'Diseño', 'Desarrollo', 'Revisión', 'Entregado'];
+
+  function cambiarTabAcceso(vista) {
+    const esEntrar = vista === 'entrar';
+    document.getElementById('vista-entrar').classList.toggle('hidden', !esEntrar);
+    document.getElementById('vista-registro').classList.toggle('hidden', esEntrar);
+    document.getElementById('tab-entrar').classList.toggle('bg-ink', esEntrar);
+    document.getElementById('tab-entrar').classList.toggle('text-paper', esEntrar);
+    document.getElementById('tab-entrar').classList.toggle('text-ink/60', !esEntrar);
+    document.getElementById('tab-registro').classList.toggle('bg-ink', !esEntrar);
+    document.getElementById('tab-registro').classList.toggle('text-paper', !esEntrar);
+    document.getElementById('tab-registro').classList.toggle('text-ink/60', esEntrar);
+  }
+
+  async function registrarse() {
+    const nombre = document.getElementById('registro-nombre').value.trim();
+    const correo = document.getElementById('registro-correo').value.trim().toLowerCase();
+    const pass = document.getElementById('registro-pass').value;
+    const pass2 = document.getElementById('registro-pass2').value;
+    const err = document.getElementById('registro-error');
+    err.classList.add('hidden');
+
+    if (!nombre || !correo || !pass) {
+      err.textContent = 'Completa todos los campos.';
+      err.classList.remove('hidden');
+      return;
+    }
+    if (pass.length < 6) {
+      err.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+      err.classList.remove('hidden');
+      return;
+    }
+    if (pass !== pass2) {
+      err.textContent = 'Las contraseñas no coinciden.';
+      err.classList.remove('hidden');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/registro-cliente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, correo, password: pass })
+      });
+      const datos = await res.json();
+      if (!res.ok) {
+        err.textContent = datos.error || 'No se pudo crear la cuenta.';
+        err.classList.remove('hidden');
+        return;
+      }
+      // Cuenta creada — entramos directo, sin pedirle que vuelva a escribir la contraseña.
+      sesion = datos;
+      sessionStorage.setItem('sesion_cliente', JSON.stringify(sesion));
+      abrirPanel();
+    } catch (e) {
+      err.textContent = 'No se pudo conectar con el servidor.';
+      err.classList.remove('hidden');
+    }
+  }
 
   async function iniciarSesion() {
     const correo = document.getElementById('login-correo').value.trim().toLowerCase();
@@ -132,6 +228,7 @@
     document.getElementById('pantalla-panel').classList.add('hidden');
     document.getElementById('pantalla-panel').classList.remove('flex');
     document.getElementById('pantalla-login').classList.remove('hidden');
+    cambiarTabAcceso('entrar');
   }
 
   function abrirPanel() {
@@ -195,6 +292,7 @@
 
   window.onload = () => {
     lucide.createIcons();
+    if (window.location.hash === '#registro') cambiarTabAcceso('registro');
     const guardada = sessionStorage.getItem('sesion_cliente');
     if (guardada) {
       try {

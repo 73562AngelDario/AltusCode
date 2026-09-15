@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const db = require('./database');
 
 const app = express();
@@ -12,6 +13,26 @@ app.use(express.static(path.join(__dirname)));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/dashboard.html', (req, res) => res.sendFile(path.join(__dirname, 'dashboard.html')));
 app.get('/admin.html', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
+
+// ─────────────────────────────────────────────
+//  CONTRASEÑAS: hash con bcrypt, nunca texto plano
+// ─────────────────────────────────────────────
+
+// Verifica una contraseña contra el hash guardado.
+// Si encuentra una contraseña vieja en texto plano (de antes de este cambio),
+// la valida por comparación directa y de paso la re-guarda ya hasheada,
+// para que la migración sea automática y transparente.
+async function verificarPassword(passwordPlano, hashGuardado, tabla, id) {
+  if (typeof hashGuardado === 'string' && hashGuardado.startsWith('$2')) {
+    return bcrypt.compare(passwordPlano, hashGuardado);
+  }
+  if (passwordPlano === hashGuardado) {
+    const nuevoHash = await bcrypt.hash(passwordPlano, 10);
+    await db.query(`UPDATE ${tabla} SET password=? WHERE id=?`, [nuevoHash, id]);
+    return true;
+  }
+  return false;
+}
 
 // ─────────────────────────────────────────────
 //  CREACIÓN DE TABLAS (todas, al arrancar)
@@ -27,9 +48,10 @@ db.query(`CREATE TABLE IF NOT EXISTS admins (
     const [rows] = await db.query('SELECT COUNT(*) as count FROM admins');
     if (rows[0].count === 0) {
         // ⚠️ Cambia esta contraseña por una tuya en cuanto entres por primera vez.
+        const hashDefault = await bcrypt.hash('admin123', 10);
         await db.query(
             'INSERT INTO admins (nombre, correo, password) VALUES (?,?,?)',
-            ['Administrador', 'admin@nucleoweb.mx', 'admin123']
+            ['Administrador', 'admin@nucleoweb.mx', hashDefault]
         );
         console.log('✅ Admin por defecto creado: admin@nucleoweb.mx / admin123');
     }
@@ -70,12 +92,16 @@ db.query(`CREATE TABLE IF NOT EXISTS contactos (
 app.post('/api/login-admin', async (req, res) => {
     try {
         const { correo, password } = req.body;
+        if (!correo || !password) return res.status(400).json({ error: 'Faltan datos' });
         const [rows] = await db.query(
-            'SELECT id, nombre, correo FROM admins WHERE correo=? AND password=?',
-            [correo, password]
+            'SELECT id, nombre, correo, password FROM admins WHERE correo=?',
+            [correo]
         );
         if (rows.length === 0) return res.status(401).json({ error: 'Credenciales incorrectas' });
-        res.json(rows[0]);
+        const admin = rows[0];
+        const ok = await verificarPassword(password, admin.password, 'admins', admin.id);
+        if (!ok) return res.status(401).json({ error: 'Credenciales incorrectas' });
+        res.json({ id: admin.id, nombre: admin.nombre, correo: admin.correo });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -84,12 +110,43 @@ app.post('/api/login-admin', async (req, res) => {
 app.post('/api/login-cliente', async (req, res) => {
     try {
         const { correo, password } = req.body;
+        if (!correo || !password) return res.status(400).json({ error: 'Faltan datos' });
         const [rows] = await db.query(
-            'SELECT id, nombre, correo FROM clientes WHERE correo=? AND password=?',
-            [correo, password]
+            'SELECT id, nombre, correo, password FROM clientes WHERE correo=?',
+            [correo]
         );
         if (rows.length === 0) return res.status(401).json({ error: 'Credenciales incorrectas' });
-        res.json(rows[0]);
+        const cliente = rows[0];
+        const ok = await verificarPassword(password, cliente.password, 'clientes', cliente.id);
+        if (!ok) return res.status(401).json({ error: 'Credenciales incorrectas' });
+        res.json({ id: cliente.id, nombre: cliente.nombre, correo: cliente.correo });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Registro público — el cliente crea su propia cuenta y elige su contraseña.
+// La contraseña se hashea antes de guardarse; nadie (ni el admin) puede verla después.
+app.post('/api/registro-cliente', async (req, res) => {
+    try {
+        const { nombre, correo, password } = req.body;
+        if (!nombre || !correo || !password) {
+            return res.status(400).json({ error: 'Completa nombre, correo y contraseña.' });
+        }
+        if (password.length < 6) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres.' });
+        }
+        const correoNormalizado = correo.trim().toLowerCase();
+        const [existentes] = await db.query('SELECT id FROM clientes WHERE correo=?', [correoNormalizado]);
+        if (existentes.length > 0) {
+            return res.status(409).json({ error: 'Ya existe una cuenta con ese correo. Inicia sesión.' });
+        }
+        const hash = await bcrypt.hash(password, 10);
+        const [result] = await db.query(
+            'INSERT INTO clientes (nombre, correo, password) VALUES (?,?,?)',
+            [nombre.trim(), correoNormalizado, hash]
+        );
+        res.json({ id: result.insertId, nombre: nombre.trim(), correo: correoNormalizado });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -101,7 +158,8 @@ app.post('/api/login-cliente', async (req, res) => {
 
 app.get('/api/clientes', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT id, nombre, correo, password FROM clientes ORDER BY id DESC');
+        // Nunca se selecciona/regresa la columna password: ni el admin puede verla.
+        const [rows] = await db.query('SELECT id, nombre, correo, created_at FROM clientes ORDER BY id DESC');
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -111,11 +169,16 @@ app.get('/api/clientes', async (req, res) => {
 app.post('/api/clientes', async (req, res) => {
     try {
         const { nombre, correo, password } = req.body;
+        if (!nombre || !correo || !password) {
+            return res.status(400).json({ error: 'Completa nombre, correo y contraseña.' });
+        }
+        const correoNormalizado = correo.trim().toLowerCase();
+        const hash = await bcrypt.hash(password, 10);
         const [result] = await db.query(
             'INSERT INTO clientes (nombre, correo, password) VALUES (?,?,?)',
-            [nombre, correo, password]
+            [nombre.trim(), correoNormalizado, hash]
         );
-        res.json({ id: result.insertId, nombre, correo });
+        res.json({ id: result.insertId, nombre: nombre.trim(), correo: correoNormalizado });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
