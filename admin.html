@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Núcleo Web</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: '#101820',
+          teal: { DEFAULT: '#1F6F63', dark: '#164F46', light: '#2E8C7D' },
+          gold: '#C9A227',
+          paper: '#EDEEEC',
+          paperdim: '#E3E4E0',
+        },
+        fontFamily: { serif: ['Fraunces', 'serif'], sans: ['"IBM Plex Sans"', 'sans-serif'] },
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'IBM Plex Sans', sans-serif; background: #EDEEEC; color: #101820; }
+  .font-serif { font-family: 'Fraunces', serif; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #1F6F63; outline-offset: 2px; }
+  .tab-btn.active { background: #101820; color: #EDEEEC; }
+</style>
+</head>
+<body class="antialiased min-h-screen">
+
+<!-- LOGIN -->
+<div id="pantalla-login" class="min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl shadow-xl w-full max-w-sm p-10 border border-ink/10">
+    <div class="flex items-center gap-2 mb-8">
+      <span class="w-8 h-8 rounded-full bg-ink flex items-center justify-center"><span class="w-2.5 h-2.5 rounded-full bg-gold"></span></span>
+      <span class="font-serif text-xl font-semibold">Núcleo Web</span>
+    </div>
+    <h1 class="font-serif text-2xl font-semibold mb-1">Panel de administración</h1>
+    <p class="text-sm text-ink/60 mb-8">Solo para el equipo de la agencia.</p>
+    <div class="space-y-4">
+      <div>
+        <label class="text-sm font-medium text-ink/70">Correo</label>
+        <input id="login-correo" type="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Contraseña</label>
+        <input id="login-pass" type="password" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+      <p id="login-error" class="text-sm text-red-600 hidden"></p>
+      <button onclick="iniciarSesion()" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div id="pantalla-panel" class="hidden min-h-screen flex-col">
+  <header class="bg-white border-b border-ink/10 sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-ink flex items-center justify-center"><span class="w-2.5 h-2.5 rounded-full bg-gold"></span></span>
+        <span class="font-serif text-lg font-semibold">Admin</span>
+      </div>
+      <button onclick="cerrarSesion()" class="text-sm font-semibold text-ink/60 hover:text-ink flex items-center gap-1.5">
+        <i data-lucide="log-out" class="w-4 h-4"></i> Salir
+      </button>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-6 pt-6 flex gap-2">
+    <button onclick="cambiarTab('proyectos')" id="tab-proyectos" class="tab-btn active px-4 py-2 rounded-full text-sm font-semibold transition-colors">Proyectos</button>
+    <button onclick="cambiarTab('clientes')" id="tab-clientes" class="tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors text-ink/60">Clientes</button>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 w-full flex-1">
+
+    <!-- TAB PROYECTOS -->
+    <div id="view-proyectos">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-serif text-2xl font-semibold">Proyectos</h2>
+        <button onclick="abrirModal('modal-proyecto')" class="bg-teal text-white text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-teal-dark transition-colors flex items-center gap-2">
+          <i data-lucide="plus" class="w-4 h-4"></i> Nuevo proyecto
+        </button>
+      </div>
+      <div class="bg-white rounded-2xl border border-ink/10 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-paperdim text-ink/60 text-xs uppercase tracking-wide">
+            <tr>
+              <th class="text-left p-4">Proyecto</th>
+              <th class="text-left p-4">Cliente</th>
+              <th class="text-left p-4">Estado</th>
+              <th class="text-left p-4">Nota</th>
+              <th class="text-right p-4">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-proyectos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB CLIENTES -->
+    <div id="view-clientes" class="hidden">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-serif text-2xl font-semibold">Clientes</h2>
+        <button onclick="abrirModal('modal-cliente')" class="bg-teal text-white text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-teal-dark transition-colors flex items-center gap-2">
+          <i data-lucide="plus" class="w-4 h-4"></i> Nuevo cliente
+        </button>
+      </div>
+      <div class="bg-white rounded-2xl border border-ink/10 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-paperdim text-ink/60 text-xs uppercase tracking-wide">
+            <tr>
+              <th class="text-left p-4">Nombre</th>
+              <th class="text-left p-4">Correo</th>
+              <th class="text-left p-4">Contraseña</th>
+              <th class="text-right p-4">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-clientes"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL NUEVO PROYECTO -->
+<div id="modal-proyecto" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-2xl p-8 max-w-md w-full">
+    <h3 class="font-serif text-xl font-semibold mb-6">Nuevo proyecto</h3>
+    <div class="space-y-4">
+      <div>
+        <label class="text-sm font-medium text-ink/70">Nombre del proyecto</label>
+        <input id="np-nombre" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Cliente</label>
+        <select id="np-cliente" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none"></select>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Tipo</label>
+        <select id="np-tipo" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+          <option>Página de presentación</option>
+          <option>Tienda o sitio completo</option>
+          <option>Panel a medida</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Nota para el cliente (opcional)</label>
+        <textarea id="np-nota" rows="2" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none"></textarea>
+      </div>
+    </div>
+    <div class="flex gap-3 mt-6">
+      <button onclick="cerrarModal('modal-proyecto')" class="flex-1 py-3 rounded-xl border border-ink/15 font-semibold hover:bg-paper">Cancelar</button>
+      <button onclick="crearProyecto()" class="flex-1 py-3 rounded-xl bg-teal text-white font-semibold hover:bg-teal-dark">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR PROYECTO -->
+<div id="modal-editar-proyecto" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-2xl p-8 max-w-md w-full">
+    <h3 class="font-serif text-xl font-semibold mb-6">Actualizar avance</h3>
+    <input type="hidden" id="ep-id">
+    <div class="space-y-4">
+      <div>
+        <label class="text-sm font-medium text-ink/70">Estado</label>
+        <select id="ep-estado" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+          <option>Brief</option>
+          <option>Diseño</option>
+          <option>Desarrollo</option>
+          <option>Revisión</option>
+          <option>Entregado</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Nota para el cliente</label>
+        <textarea id="ep-nota" rows="2" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none"></textarea>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Enlace del sitio (opcional)</label>
+        <input id="ep-enlace" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+    </div>
+    <div class="flex gap-3 mt-6">
+      <button onclick="cerrarModal('modal-editar-proyecto')" class="flex-1 py-3 rounded-xl border border-ink/15 font-semibold hover:bg-paper">Cancelar</button>
+      <button onclick="guardarEdicionProyecto()" class="flex-1 py-3 rounded-xl bg-teal text-white font-semibold hover:bg-teal-dark">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO CLIENTE -->
+<div id="modal-cliente" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-2xl p-8 max-w-md w-full">
+    <h3 class="font-serif text-xl font-semibold mb-6">Nuevo cliente</h3>
+    <div class="space-y-4">
+      <div>
+        <label class="text-sm font-medium text-ink/70">Nombre</label>
+        <input id="nc-nombre" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Correo</label>
+        <input id="nc-correo" type="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Contraseña</label>
+        <input id="nc-pass" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+    </div>
+    <div class="flex gap-3 mt-6">
+      <button onclick="cerrarModal('modal-cliente')" class="flex-1 py-3 rounded-xl border border-ink/15 font-semibold hover:bg-paper">Cancelar</button>
+      <button onclick="crearCliente()" class="flex-1 py-3 rounded-xl bg-teal text-white font-semibold hover:bg-teal-dark">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let sesion = null;
+  let clientesCache = [];
+  let proyectosCache = [];
+
+  function abrirModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
+  function cerrarModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
+
+  async function iniciarSesion() {
+    const correo = document.getElementById('login-correo').value.trim().toLowerCase();
+    const pass = document.getElementById('login-pass').value.trim();
+    const err = document.getElementById('login-error');
+    err.classList.add('hidden');
+    try {
+      const res = await fetch('/api/login-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ correo, password: pass })
+      });
+      if (!res.ok) { err.textContent = 'Correo o contraseña incorrectos.'; err.classList.remove('hidden'); return; }
+      sesion = await res.json();
+      sessionStorage.setItem('sesion_admin', JSON.stringify(sesion));
+      abrirPanel();
+    } catch (e) { err.textContent = 'No se pudo conectar con el servidor.'; err.classList.remove('hidden'); }
+  }
+
+  function cerrarSesion() {
+    sessionStorage.removeItem('sesion_admin');
+    location.reload();
+  }
+
+  function abrirPanel() {
+    document.getElementById('pantalla-login').classList.add('hidden');
+    document.getElementById('pantalla-panel').classList.remove('hidden');
+    document.getElementById('pantalla-panel').classList.add('flex');
+    cargarClientes();
+    cargarProyectos();
+  }
+
+  function cambiarTab(tab) {
+    ['proyectos', 'clientes'].forEach(t => {
+      document.getElementById('view-' + t).classList.toggle('hidden', t !== tab);
+      document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+      document.getElementById('tab-' + t).classList.toggle('text-ink/60', t !== tab);
+    });
+  }
+
+  // ---- CLIENTES ----
+  async function cargarClientes() {
+    const tbody = document.getElementById('tabla-clientes');
+    tbody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-ink/40">Cargando...</td></tr>';
+    try {
+      const res = await fetch('/api/clientes');
+      clientesCache = await res.json();
+      tbody.innerHTML = '';
+      const select = document.getElementById('np-cliente');
+      select.innerHTML = clientesCache.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+      clientesCache.forEach(c => {
+        tbody.insertAdjacentHTML('beforeend', `
+          <tr class="border-t border-ink/5">
+            <td class="p-4 font-semibold">${c.nombre}</td>
+            <td class="p-4 text-ink/60">${c.correo}</td>
+            <td class="p-4 text-ink/60">${c.password}</td>
+            <td class="p-4 text-right"><button onclick="eliminarCliente(${c.id})" class="text-ink/40 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+          </tr>
+        `);
+      });
+      lucide.createIcons();
+    } catch (e) { tbody.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-red-500">Error al cargar clientes.</td></tr>'; }
+  }
+
+  async function crearCliente() {
+    const nombre = document.getElementById('nc-nombre').value.trim();
+    const correo = document.getElementById('nc-correo').value.trim().toLowerCase();
+    const password = document.getElementById('nc-pass').value.trim();
+    if (!nombre || !correo || !password) return alert('Completa todos los campos.');
+    try {
+      await fetch('/api/clientes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, correo, password })
+      });
+      cerrarModal('modal-cliente');
+      document.getElementById('nc-nombre').value = '';
+      document.getElementById('nc-correo').value = '';
+      document.getElementById('nc-pass').value = '';
+      cargarClientes();
+    } catch (e) { alert('Error al guardar el cliente.'); }
+  }
+
+  async function eliminarCliente(id) {
+    if (!confirm('¿Eliminar este cliente?')) return;
+    await fetch(`/api/clientes/${id}`, { method: 'DELETE' });
+    cargarClientes();
+  }
+
+  // ---- PROYECTOS ----
+  async function cargarProyectos() {
+    const tbody = document.getElementById('tabla-proyectos');
+    tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-ink/40">Cargando...</td></tr>';
+    try {
+      const res = await fetch('/api/proyectos');
+      proyectosCache = await res.json();
+      tbody.innerHTML = '';
+      if (proyectosCache.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-ink/40">Todavía no hay proyectos.</td></tr>';
+        return;
+      }
+      proyectosCache.forEach(p => {
+        tbody.insertAdjacentHTML('beforeend', `
+          <tr class="border-t border-ink/5">
+            <td class="p-4 font-semibold">${p.nombre}<div class="text-xs text-ink/40 font-normal">${p.tipo || ''}</div></td>
+            <td class="p-4 text-ink/60">${p.cliente_nombre || '—'}</td>
+            <td class="p-4"><span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-teal/10 text-teal-dark">${p.estado}</span></td>
+            <td class="p-4 text-ink/50 max-w-[200px] truncate">${p.nota || '—'}</td>
+            <td class="p-4 text-right flex justify-end gap-2">
+              <button onclick="abrirEditarProyecto(${p.id})" class="text-ink/40 hover:text-teal" title="Editar"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button onclick="eliminarProyecto(${p.id})" class="text-ink/40 hover:text-red-600" title="Eliminar"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </td>
+          </tr>
+        `);
+      });
+      lucide.createIcons();
+    } catch (e) { tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-red-500">Error al cargar proyectos.</td></tr>'; }
+  }
+
+  async function crearProyecto() {
+    const nombre = document.getElementById('np-nombre').value.trim();
+    const clienteId = document.getElementById('np-cliente').value;
+    const tipo = document.getElementById('np-tipo').value;
+    const nota = document.getElementById('np-nota').value.trim();
+    if (!nombre || !clienteId) return alert('Completa nombre y cliente.');
+    try {
+      await fetch('/api/proyectos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, clienteId, tipo, nota, estado: 'Brief' })
+      });
+      cerrarModal('modal-proyecto');
+      document.getElementById('np-nombre').value = '';
+      document.getElementById('np-nota').value = '';
+      cargarProyectos();
+    } catch (e) { alert('Error al guardar el proyecto.'); }
+  }
+
+  function abrirEditarProyecto(id) {
+    const p = proyectosCache.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('ep-id').value = p.id;
+    document.getElementById('ep-estado').value = p.estado;
+    document.getElementById('ep-nota').value = p.nota || '';
+    document.getElementById('ep-enlace').value = p.enlace || '';
+    abrirModal('modal-editar-proyecto');
+  }
+
+  async function guardarEdicionProyecto() {
+    const id = document.getElementById('ep-id').value;
+    const estado = document.getElementById('ep-estado').value;
+    const nota = document.getElementById('ep-nota').value.trim();
+    const enlace = document.getElementById('ep-enlace').value.trim();
+    try {
+      await fetch(`/api/proyectos/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado, nota, enlace })
+      });
+      cerrarModal('modal-editar-proyecto');
+      cargarProyectos();
+    } catch (e) { alert('Error al guardar los cambios.'); }
+  }
+
+  async function eliminarProyecto(id) {
+    if (!confirm('¿Eliminar este proyecto?')) return;
+    await fetch(`/api/proyectos/${id}`, { method: 'DELETE' });
+    cargarProyectos();
+  }
+
+  window.onload = () => {
+    lucide.createIcons();
+    const guardada = sessionStorage.getItem('sesion_admin');
+    if (guardada) {
+      try { sesion = JSON.parse(guardada); abrirPanel(); }
+      catch (e) { sessionStorage.removeItem('sesion_admin'); }
+    }
+  };
+</script>
+</body>
+</html>

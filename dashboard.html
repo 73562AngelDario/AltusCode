@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de cliente — Núcleo Web</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: '#101820',
+          teal: { DEFAULT: '#1F6F63', dark: '#164F46', light: '#2E8C7D' },
+          gold: '#C9A227',
+          paper: '#EDEEEC',
+          paperdim: '#E3E4E0',
+        },
+        fontFamily: { serif: ['Fraunces', 'serif'], sans: ['"IBM Plex Sans"', 'sans-serif'] },
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'IBM Plex Sans', sans-serif; background: #EDEEEC; color: #101820; }
+  .font-serif { font-family: 'Fraunces', serif; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #1F6F63; outline-offset: 2px; }
+</style>
+</head>
+<body class="antialiased min-h-screen">
+
+<!-- PANTALLA: LOGIN -->
+<div id="pantalla-login" class="min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl shadow-xl w-full max-w-sm p-10 border border-ink/10">
+    <div class="flex items-center gap-2 mb-8">
+      <span class="w-8 h-8 rounded-full bg-ink flex items-center justify-center">
+        <span class="w-2.5 h-2.5 rounded-full bg-gold"></span>
+      </span>
+      <span class="font-serif text-xl font-semibold">Núcleo Web</span>
+    </div>
+    <h1 class="font-serif text-2xl font-semibold mb-1">Acceso de clientes</h1>
+    <p class="text-sm text-ink/60 mb-8">Consulta el avance de tu proyecto.</p>
+    <div class="space-y-4">
+      <div>
+        <label class="text-sm font-medium text-ink/70">Correo</label>
+        <input id="login-correo" type="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+      <div>
+        <label class="text-sm font-medium text-ink/70">Contraseña</label>
+        <input id="login-pass" type="password" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+      </div>
+      <p id="login-error" class="text-sm text-red-600 hidden"></p>
+      <button onclick="iniciarSesion()" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Entrar</button>
+    </div>
+    <p class="text-xs text-ink/40 mt-8 text-center">¿No tienes acceso todavía? Te lo enviamos al iniciar tu proyecto.</p>
+    <a href="index.html" class="block text-center text-sm text-teal font-medium mt-4 hover:text-teal-dark">← Volver al sitio</a>
+  </div>
+</div>
+
+<!-- PANTALLA: PANEL -->
+<div id="pantalla-panel" class="hidden min-h-screen flex-col">
+  <header class="bg-white border-b border-ink/10 sticky top-0 z-10">
+    <div class="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-ink flex items-center justify-center">
+          <span class="w-2.5 h-2.5 rounded-full bg-gold"></span>
+        </span>
+        <span class="font-serif text-lg font-semibold">Núcleo Web</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span id="panel-nombre" class="text-sm text-ink/60 hidden sm:inline"></span>
+        <button onclick="cerrarSesion()" class="text-sm font-semibold text-ink/60 hover:text-ink flex items-center gap-1.5">
+          <i data-lucide="log-out" class="w-4 h-4"></i> Salir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-10 w-full flex-1">
+    <div id="sin-proyectos" class="hidden bg-white rounded-2xl border border-ink/10 p-10 text-center">
+      <i data-lucide="folder-search" class="w-10 h-10 text-ink/30 mx-auto mb-4"></i>
+      <h2 class="font-serif text-xl font-semibold mb-2">Todavía no hay un proyecto activo</h2>
+      <p class="text-sm text-ink/60">Cuando comencemos a trabajar en el tuyo, aparecerá aquí con su avance.</p>
+    </div>
+
+    <div id="proyectos-lista" class="space-y-8"></div>
+  </main>
+</div>
+
+<script>
+  let sesion = null;
+  const ETAPAS = ['Brief', 'Diseño', 'Desarrollo', 'Revisión', 'Entregado'];
+
+  async function iniciarSesion() {
+    const correo = document.getElementById('login-correo').value.trim().toLowerCase();
+    const pass = document.getElementById('login-pass').value.trim();
+    const err = document.getElementById('login-error');
+    err.classList.add('hidden');
+
+    if (!correo || !pass) {
+      err.textContent = 'Escribe tu correo y contraseña.';
+      err.classList.remove('hidden');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/login-cliente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ correo, password: pass })
+      });
+      if (!res.ok) {
+        err.textContent = 'Correo o contraseña incorrectos.';
+        err.classList.remove('hidden');
+        return;
+      }
+      sesion = await res.json();
+      sessionStorage.setItem('sesion_cliente', JSON.stringify(sesion));
+      abrirPanel();
+    } catch (e) {
+      err.textContent = 'No se pudo conectar con el servidor.';
+      err.classList.remove('hidden');
+    }
+  }
+
+  function cerrarSesion() {
+    sessionStorage.removeItem('sesion_cliente');
+    sesion = null;
+    document.getElementById('pantalla-panel').classList.add('hidden');
+    document.getElementById('pantalla-panel').classList.remove('flex');
+    document.getElementById('pantalla-login').classList.remove('hidden');
+  }
+
+  function abrirPanel() {
+    document.getElementById('panel-nombre').textContent = sesion.nombre;
+    document.getElementById('pantalla-login').classList.add('hidden');
+    document.getElementById('pantalla-panel').classList.remove('hidden');
+    document.getElementById('pantalla-panel').classList.add('flex');
+    cargarProyectos();
+  }
+
+  function stepperHtml(estadoActual) {
+    const idx = ETAPAS.indexOf(estadoActual);
+    return ETAPAS.map((etapa, i) => {
+      const done = i <= idx;
+      return `
+        <div class="flex-1 flex flex-col items-center relative">
+          ${i > 0 ? `<div class="absolute top-3 right-1/2 w-full h-0.5 ${i <= idx ? 'bg-teal' : 'bg-ink/10'}"></div>` : ''}
+          <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold z-10 ${done ? 'bg-teal text-white' : 'bg-white border border-ink/20 text-ink/40'}">${i + 1}</div>
+          <span class="text-[11px] mt-2 font-medium ${done ? 'text-ink' : 'text-ink/40'}">${etapa}</span>
+        </div>`;
+    }).join('');
+  }
+
+  async function cargarProyectos() {
+    const lista = document.getElementById('proyectos-lista');
+    const vacio = document.getElementById('sin-proyectos');
+    lista.innerHTML = '<p class="text-center text-ink/40 py-10">Cargando...</p>';
+    try {
+      const res = await fetch(`/api/proyectos?clienteId=${sesion.id}`);
+      const proyectos = await res.json();
+
+      if (proyectos.length === 0) {
+        lista.innerHTML = '';
+        vacio.classList.remove('hidden');
+        return;
+      }
+      vacio.classList.add('hidden');
+      lista.innerHTML = '';
+
+      proyectos.forEach(p => {
+        lista.insertAdjacentHTML('beforeend', `
+          <div class="bg-white rounded-2xl border border-ink/10 p-8">
+            <div class="flex items-center justify-between mb-8">
+              <div>
+                <p class="text-xs font-semibold text-teal uppercase tracking-wide">${p.tipo || 'Proyecto web'}</p>
+                <h2 class="font-serif text-2xl font-semibold mt-1">${p.nombre}</h2>
+              </div>
+              <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-teal/10 text-teal-dark">${p.estado}</span>
+            </div>
+            <div class="flex mb-8">${stepperHtml(p.estado)}</div>
+            ${p.nota ? `<p class="text-sm text-ink/70 bg-paper rounded-xl p-4 mb-6 leading-relaxed"><i data-lucide="message-circle" class="w-4 h-4 inline mr-1 text-teal"></i> ${p.nota}</p>` : ''}
+            ${p.enlace ? `<a href="${p.enlace}" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-teal hover:text-teal-dark"><i data-lucide="external-link" class="w-4 h-4"></i> Ver sitio en línea</a>` : ''}
+          </div>
+        `);
+      });
+      lucide.createIcons();
+    } catch (e) {
+      lista.innerHTML = '<p class="text-center text-red-500 py-10">No se pudieron cargar tus proyectos.</p>';
+    }
+  }
+
+  window.onload = () => {
+    lucide.createIcons();
+    const guardada = sessionStorage.getItem('sesion_cliente');
+    if (guardada) {
+      try {
+        sesion = JSON.parse(guardada);
+        abrirPanel();
+      } catch (e) {
+        sessionStorage.removeItem('sesion_cliente');
+      }
+    }
+  };
+</script>
+</body>
+</html>
