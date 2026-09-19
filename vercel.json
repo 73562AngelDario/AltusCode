@@ -1,15 +1,9 @@
 {
   "version": 2,
   "builds": [
-    { "src": "server.js", "use": "@vercel/node" },
-    { "src": "index.html", "use": "@vercel/static" },
-    { "src": "dashboard.html", "use": "@vercel/static" },
-    { "src": "admin.html", "use": "@vercel/static" }
+    { "src": "server.js", "use": "@vercel/node", "config": { "includeFiles": ["**"] } }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/server.js" },
-    { "src": "/dashboard.html", "dest": "/dashboard.html" },
-    { "src": "/admin.html", "dest": "/admin.html" },
-    { "src": "/", "dest": "/index.html" }
+    { "src": "/(.*)", "dest": "/server.js" }
   ]
 }
