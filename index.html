@@ -75,7 +75,7 @@
       <a href="#precios" class="hover:text-ink transition-colors">Precios</a>
     </nav>
     <div class="flex items-center gap-3">
-      <a href="dashboard.html" class="hidden sm:inline text-sm font-semibold text-ink/70 hover:text-ink transition-colors">Acceso clientes</a>
+      <a href="dashboard.html" id="nav-acceso-clientes" class="hidden sm:inline text-sm font-semibold text-ink/70 hover:text-ink transition-colors">Acceso clientes</a>
       <a href="#contacto" class="text-sm font-semibold bg-ink text-paper px-5 py-2.5 rounded-full hover:bg-teal-dark transition-colors">Cuéntanos tu proyecto</a>
     </div>
   </div>
@@ -278,7 +278,7 @@
         <p class="flex items-center gap-3"><i data-lucide="phone" class="w-5 h-5 text-teal"></i> +52 981 000 0000</p>
         <p class="flex items-center gap-3"><i data-lucide="map-pin" class="w-5 h-5 text-teal"></i> Campeche, México — trabajo remoto en todo el país</p>
       </div>
-      <p class="mt-8 text-sm text-ink/60">¿Ya platicamos de tu proyecto? <a href="dashboard.html#registro" class="text-teal font-semibold hover:text-teal-dark">Crea tu cuenta de cliente</a> y da seguimiento al avance.</p>
+      <p id="cta-cliente" class="mt-8 text-sm text-ink/60">¿Ya platicamos de tu proyecto? <a href="dashboard.html#registro" class="text-teal font-semibold hover:text-teal-dark">Crea tu cuenta de cliente</a> y da seguimiento al avance.</p>
     </div>
     <form id="form-contacto" class="space-y-4">
       <div>
@@ -302,12 +302,30 @@
 <footer class="bg-paperdim border-t border-ink/10">
   <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-ink/50">
     <p>© 2026 Núcleo Web.</p>
-    <a href="dashboard.html" class="hover:text-ink transition-colors">Acceso para clientes</a>
+    <a href="dashboard.html" id="footer-acceso-clientes" class="hover:text-ink transition-colors">Acceso para clientes</a>
   </div>
 </footer>
 
 <script>
   lucide.createIcons();
+
+  // Si el cliente ya inició sesión (guardado por dashboard.html), reflejarlo aquí:
+  // cambia "Acceso clientes" por su nombre y lo manda directo a su panel.
+  (function () {
+    const guardada = sessionStorage.getItem('sesion_cliente');
+    if (!guardada) return;
+    try {
+      const sesion = JSON.parse(guardada);
+      const navLink = document.getElementById('nav-acceso-clientes');
+      if (navLink) { navLink.textContent = `Hola, ${sesion.nombre.split(' ')[0]}`; }
+      const footerLink = document.getElementById('footer-acceso-clientes');
+      if (footerLink) { footerLink.textContent = 'Ir a mi panel'; }
+      const cta = document.getElementById('cta-cliente');
+      if (cta) { cta.innerHTML = `Ya tienes sesión iniciada como <strong>${sesion.nombre}</strong>. <a href="dashboard.html" class="text-teal font-semibold hover:text-teal-dark">Ir a mi panel</a>.`; }
+    } catch (e) {
+      sessionStorage.removeItem('sesion_cliente');
+    }
+  })();
 
   document.getElementById('form-contacto').addEventListener('submit', async (e) => {
     e.preventDefault();
