@@ -74,6 +74,7 @@
   <div class="max-w-6xl mx-auto px-6 pt-6 flex gap-2">
     <button onclick="cambiarTab('proyectos')" id="tab-proyectos" class="tab-btn active px-4 py-2 rounded-full text-sm font-semibold transition-colors">Proyectos</button>
     <button onclick="cambiarTab('clientes')" id="tab-clientes" class="tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors text-ink/60">Clientes</button>
+    <button onclick="cambiarTab('mensajes')" id="tab-mensajes" class="tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors text-ink/60">Mensajes <span id="badge-mensajes" class="hidden ml-1 bg-teal text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full"></span></button>
   </div>
 
   <main class="max-w-6xl mx-auto px-6 py-8 w-full flex-1">
@@ -122,6 +123,17 @@
           <tbody id="tabla-clientes"></tbody>
         </table>
       </div>
+    </div>
+
+    <!-- TAB MENSAJES -->
+    <div id="view-mensajes" class="hidden">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="font-serif text-2xl font-semibold">Mensajes</h2>
+          <p class="text-sm text-ink/50 mt-1">Lo que la gente escribió en el formulario de contacto de la página principal: qué proyecto quiere y sus detalles.</p>
+        </div>
+      </div>
+      <div id="lista-mensajes" class="space-y-4"></div>
     </div>
   </main>
 </div>
@@ -254,10 +266,11 @@
     document.getElementById('pantalla-panel').classList.add('flex');
     cargarClientes();
     cargarProyectos();
+    cargarMensajes();
   }
 
   function cambiarTab(tab) {
-    ['proyectos', 'clientes'].forEach(t => {
+    ['proyectos', 'clientes', 'mensajes'].forEach(t => {
       document.getElementById('view-' + t).classList.toggle('hidden', t !== tab);
       document.getElementById('tab-' + t).classList.toggle('active', t === tab);
       document.getElementById('tab-' + t).classList.toggle('text-ink/60', t !== tab);
@@ -391,6 +404,71 @@
     if (!confirm('¿Eliminar este proyecto?')) return;
     await fetch(`/api/proyectos/${id}`, { method: 'DELETE' });
     cargarProyectos();
+  }
+
+  // ---- MENSAJES (formulario de contacto público) ----
+  let mensajesCache = [];
+
+  async function cargarMensajes() {
+    const cont = document.getElementById('lista-mensajes');
+    cont.innerHTML = '<p class="text-center text-ink/40 py-10">Cargando...</p>';
+    try {
+      const res = await fetch('/api/contactos');
+      mensajesCache = await res.json();
+      const badge = document.getElementById('badge-mensajes');
+      if (mensajesCache.length > 0) {
+        badge.textContent = mensajesCache.length;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+      if (mensajesCache.length === 0) {
+        cont.innerHTML = '<div class="bg-white rounded-2xl border border-ink/10 p-10 text-center text-ink/40">Todavía no hay mensajes.</div>';
+        return;
+      }
+      cont.innerHTML = '';
+      mensajesCache.forEach(m => {
+        const fecha = m.created_at ? new Date(m.created_at).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+        cont.insertAdjacentHTML('beforeend', `
+          <div class="bg-white rounded-2xl border border-ink/10 p-6">
+            <div class="flex items-start justify-between gap-4 mb-3">
+              <div>
+                <p class="font-semibold">${m.nombre}</p>
+                <p class="text-sm text-teal">${m.correo}</p>
+              </div>
+              <span class="text-xs text-ink/40 whitespace-nowrap">${fecha}</span>
+            </div>
+            <p class="text-sm text-ink/70 bg-paper rounded-xl p-4 leading-relaxed whitespace-pre-wrap">${m.mensaje}</p>
+            <div class="flex gap-3 mt-4">
+              <button onclick="usarMensajeParaProyecto(${m.id})" class="text-sm font-semibold text-teal hover:text-teal-dark flex items-center gap-1.5">
+                <i data-lucide="folder-plus" class="w-4 h-4"></i> Crear proyecto con esto
+              </button>
+              <button onclick="eliminarMensaje(${m.id})" class="text-sm font-semibold text-ink/40 hover:text-red-600 flex items-center gap-1.5">
+                <i data-lucide="trash-2" class="w-4 h-4"></i> Eliminar
+              </button>
+            </div>
+          </div>
+        `);
+      });
+      lucide.createIcons();
+    } catch (e) {
+      cont.innerHTML = '<p class="text-center text-red-500 py-10">No se pudieron cargar los mensajes.</p>';
+    }
+  }
+
+  async function eliminarMensaje(id) {
+    if (!confirm('¿Eliminar este mensaje?')) return;
+    await fetch(`/api/contactos/${id}`, { method: 'DELETE' });
+    cargarMensajes();
+  }
+
+  // Prellena el modal de "Nuevo proyecto" con el nombre y mensaje de un contacto,
+  // para no tener que copiar y pegar a mano. El admin elige el cliente correspondiente.
+  function usarMensajeParaProyecto(id) {
+    const m = mensajesCache.find(x => x.id === id);
+    if (!m) return;
+    document.getElementById('np-nota').value = m.mensaje;
+    abrirModal('modal-proyecto');
   }
 
   window.onload = () => {

@@ -280,6 +280,15 @@ app.get('/api/contactos', async (req, res) => {
     }
 });
 
+app.delete('/api/contactos/:id', async (req, res) => {
+    try {
+        await db.query('DELETE FROM contactos WHERE id=?', [req.params.id]);
+        res.json({ ok: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // ─────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
     const port = process.env.PORT || 3000;
