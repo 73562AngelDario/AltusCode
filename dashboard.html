@@ -3,117 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="img/logo-icono.png">
 <title>Panel de cliente — Altus Code</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          ink: '#101820',
-          teal: { DEFAULT: '#1F6F63', dark: '#164F46', light: '#2E8C7D' },
-          gold: '#C9A227',
-          paper: '#EDEEEC',
-          paperdim: '#E3E4E0',
+          night: '#0B1020', panel: '#121A30', line: '#24304D',
+          mist: '#93A1C2', dim: '#7F8EB2', snow: '#E8EDF8',
+          sky: { DEFAULT: '#3BBCF6', dark: '#2A9AD1' },
         },
-        fontFamily: { serif: ['Fraunces', 'serif'], sans: ['"IBM Plex Sans"', 'sans-serif'] },
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          sans: ['"Space Grotesk"', 'sans-serif'],
+          mono: ['"IBM Plex Mono"', 'monospace'],
+        },
       }
     }
   }
 </script>
 <style>
-  body { font-family: 'IBM Plex Sans', sans-serif; background: #EDEEEC; color: #101820; }
-  .font-serif { font-family: 'Fraunces', serif; }
-  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #1F6F63; outline-offset: 2px; }
+  body { font-family: 'Space Grotesk', sans-serif; background: #0B1020; color: #E8EDF8; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #3BBCF6; outline-offset: 2px; }
 </style>
 </head>
 <body class="antialiased min-h-screen">
 
 <!-- PANTALLA: LOGIN / REGISTRO -->
 <div id="pantalla-login" class="min-h-screen flex items-center justify-center p-4">
-  <div class="bg-white rounded-3xl shadow-xl w-full max-w-sm p-10 border border-ink/10">
-    <div class="flex items-center gap-2 mb-8">
-      <span class="w-8 h-8 rounded-full bg-ink flex items-center justify-center">
-        <span class="w-2.5 h-2.5 rounded-full bg-gold"></span>
-      </span>
-      <span class="font-serif text-xl font-semibold">Altus Code</span>
+  <div class="bg-panel rounded-xl w-full max-w-sm p-10 border border-line">
+    <div class="flex items-center gap-3.5 mb-8">
+      <img src="img/logo-icono.png" alt="Altus Code" class="w-10 h-10 rounded-[10px] ring-1 ring-[#2B3A5E]"><img src="img/logo-letras.png" alt="" class="h-[18px] w-auto">
     </div>
 
-    <div class="flex gap-2 mb-8 bg-paper rounded-full p-1">
-      <button id="tab-entrar" onclick="cambiarTabAcceso('entrar')" class="flex-1 text-sm font-semibold py-2 rounded-full bg-ink text-paper transition-colors">Entrar</button>
-      <button id="tab-registro" onclick="cambiarTabAcceso('registro')" class="flex-1 text-sm font-semibold py-2 rounded-full text-ink/60 transition-colors">Crear cuenta</button>
+    <div class="flex gap-2 mb-8 bg-night rounded-lg p-1 border border-line">
+      <button id="tab-entrar" onclick="cambiarTabAcceso('entrar')" class="flex-1 text-sm font-semibold py-2 rounded-md bg-sky text-night transition-colors">Entrar</button>
+      <button id="tab-registro" onclick="cambiarTabAcceso('registro')" class="flex-1 text-sm font-semibold py-2 rounded-md text-mist transition-colors">Crear cuenta</button>
     </div>
 
     <!-- ENTRAR -->
     <div id="vista-entrar">
-      <h1 class="font-serif text-2xl font-semibold mb-1">Acceso de clientes</h1>
-      <p class="text-sm text-ink/60 mb-8">Consulta el avance de tu proyecto.</p>
+      <h1 class="font-display text-2xl font-bold mb-1">Acceso de clientes</h1>
+      <p class="text-sm text-mist mb-8">Consulta el avance de tu proyecto.</p>
       <form id="login-form" class="space-y-4" onsubmit="event.preventDefault(); iniciarSesion();">
         <div>
-          <label class="text-sm font-medium text-ink/70">Correo</label>
-          <input id="login-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+          <label class="text-sm font-medium text-mist">Correo</label>
+          <input id="login-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
         </div>
         <div>
-          <label class="text-sm font-medium text-ink/70">Contraseña</label>
-          <input id="login-pass" type="password" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+          <label class="text-sm font-medium text-mist">Contraseña</label>
+          <input id="login-pass" type="password" required class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
         </div>
-        <p id="login-error" class="text-sm text-red-600 hidden"></p>
-        <button type="submit" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Entrar</button>
+        <p id="login-error" class="text-sm text-red-400 hidden"></p>
+        <button type="submit" class="w-full bg-sky text-night font-semibold py-3.5 rounded-lg hover:bg-sky-dark transition-colors">Entrar</button>
       </form>
-      <p class="text-xs text-ink/40 mt-8 text-center">¿Todavía no tienes cuenta? <button type="button" onclick="cambiarTabAcceso('registro')" class="text-teal font-semibold hover:text-teal-dark">Créala aquí</button>.</p>
+      <p class="text-xs text-dim mt-8 text-center">¿Todavía no tienes cuenta? <button type="button" onclick="cambiarTabAcceso('registro')" class="text-sky font-semibold hover:text-snow">Créala aquí</button>.</p>
     </div>
 
     <!-- CREAR CUENTA -->
     <div id="vista-registro" class="hidden">
-      <h1 class="font-serif text-2xl font-semibold mb-1">Crea tu cuenta</h1>
-      <p class="text-sm text-ink/60 mb-8">Elige tú mismo tu contraseña — nadie más la verá.</p>
+      <h1 class="font-display text-2xl font-bold mb-1">Crea tu cuenta</h1>
+      <p class="text-sm text-mist mb-8">Elige tú mismo tu contraseña — nadie más la verá.</p>
       <form id="registro-form" class="space-y-4" onsubmit="event.preventDefault(); registrarse();">
         <div>
-          <label class="text-sm font-medium text-ink/70">Nombre</label>
-          <input id="registro-nombre" type="text" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+          <label class="text-sm font-medium text-mist">Nombre</label>
+          <input id="registro-nombre" type="text" required class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
         </div>
         <div>
-          <label class="text-sm font-medium text-ink/70">Correo</label>
-          <input id="registro-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+          <label class="text-sm font-medium text-mist">Correo</label>
+          <input id="registro-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
         </div>
         <div>
-          <label class="text-sm font-medium text-ink/70">Contraseña</label>
-          <input id="registro-pass" type="password" required minlength="6" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
-          <p class="text-xs text-ink/40 mt-1">Mínimo 6 caracteres.</p>
+          <label class="text-sm font-medium text-mist">Contraseña</label>
+          <input id="registro-pass" type="password" required minlength="6" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
+          <p class="text-xs text-dim mt-1">Mínimo 6 caracteres.</p>
         </div>
         <div>
-          <label class="text-sm font-medium text-ink/70">Confirma tu contraseña</label>
-          <input id="registro-pass2" type="password" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+          <label class="text-sm font-medium text-mist">Confirma tu contraseña</label>
+          <input id="registro-pass2" type="password" required class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
         </div>
-        <p id="registro-error" class="text-sm text-red-600 hidden"></p>
-        <button type="submit" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Crear cuenta</button>
+        <p id="registro-error" class="text-sm text-red-400 hidden"></p>
+        <button type="submit" class="w-full bg-sky text-night font-semibold py-3.5 rounded-lg hover:bg-sky-dark transition-colors">Crear cuenta</button>
       </form>
-      <p class="text-xs text-ink/40 mt-8 text-center">¿Ya tienes cuenta? <button type="button" onclick="cambiarTabAcceso('entrar')" class="text-teal font-semibold hover:text-teal-dark">Entra aquí</button>.</p>
+      <p class="text-xs text-dim mt-8 text-center">¿Ya tienes cuenta? <button type="button" onclick="cambiarTabAcceso('entrar')" class="text-sky font-semibold hover:text-snow">Entra aquí</button>.</p>
     </div>
 
-    <a href="index.html" class="block text-center text-sm text-teal font-medium mt-6 hover:text-teal-dark">← Volver al sitio</a>
+    <a href="index.html" class="block text-center text-sm text-sky font-medium mt-6 hover:text-snow">← Volver al sitio</a>
   </div>
 </div>
 
 <!-- PANTALLA: PANEL -->
 <div id="pantalla-panel" class="hidden min-h-screen flex-col">
-  <header class="bg-white border-b border-ink/10 sticky top-0 z-10">
+  <header class="bg-panel border-b border-line sticky top-0 z-10">
     <div class="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2 hover:opacity-70 transition-opacity">
-        <span class="w-8 h-8 rounded-full bg-ink flex items-center justify-center">
-          <span class="w-2.5 h-2.5 rounded-full bg-gold"></span>
-        </span>
-        <span class="font-serif text-lg font-semibold">Altus Code</span>
+      <a href="index.html" class="flex items-center gap-3.5 hover:opacity-70 transition-opacity">
+        <img src="img/logo-icono.png" alt="Altus Code" class="w-10 h-10 rounded-[10px] ring-1 ring-[#2B3A5E]"><img src="img/logo-letras.png" alt="" class="h-[18px] w-auto">
       </a>
       <div class="flex items-center gap-4">
-        <span id="panel-nombre" class="text-sm text-ink/60 hidden sm:inline"></span>
-        <a href="index.html" class="text-sm font-semibold text-ink/60 hover:text-ink hidden sm:inline-flex items-center gap-1.5">
+        <span id="panel-nombre" class="text-sm text-mist hidden sm:inline"></span>
+        <a href="index.html" class="text-sm font-semibold text-mist hover:text-snow hidden sm:inline-flex items-center gap-1.5">
           <i data-lucide="arrow-left" class="w-4 h-4"></i> Al sitio
         </a>
-        <button onclick="cerrarSesion()" class="text-sm font-semibold text-ink/60 hover:text-ink flex items-center gap-1.5">
+        <button onclick="cerrarSesion()" class="text-sm font-semibold text-mist hover:text-snow flex items-center gap-1.5">
           <i data-lucide="log-out" class="w-4 h-4"></i> Salir
         </button>
       </div>
@@ -121,10 +117,10 @@
   </header>
 
   <main class="max-w-4xl mx-auto px-6 py-10 w-full flex-1">
-    <div id="sin-proyectos" class="hidden bg-white rounded-2xl border border-ink/10 p-10 text-center">
-      <i data-lucide="folder-search" class="w-10 h-10 text-ink/30 mx-auto mb-4"></i>
-      <h2 class="font-serif text-xl font-semibold mb-2">Todavía no hay un proyecto activo</h2>
-      <p class="text-sm text-ink/60">Cuando comencemos a trabajar en el tuyo, aparecerá aquí con su avance.</p>
+    <div id="sin-proyectos" class="hidden bg-panel rounded-xl border border-line p-10 text-center">
+      <i data-lucide="folder-search" class="w-10 h-10 text-dim mx-auto mb-4"></i>
+      <h2 class="font-display text-xl font-semibold mb-2">Todavía no hay un proyecto activo</h2>
+      <p class="text-sm text-mist">Cuando comencemos a trabajar en el tuyo, aparecerá aquí con su avance.</p>
     </div>
 
     <div id="proyectos-lista" class="space-y-8"></div>
@@ -139,12 +135,12 @@
     const esEntrar = vista === 'entrar';
     document.getElementById('vista-entrar').classList.toggle('hidden', !esEntrar);
     document.getElementById('vista-registro').classList.toggle('hidden', esEntrar);
-    document.getElementById('tab-entrar').classList.toggle('bg-ink', esEntrar);
-    document.getElementById('tab-entrar').classList.toggle('text-paper', esEntrar);
-    document.getElementById('tab-entrar').classList.toggle('text-ink/60', !esEntrar);
-    document.getElementById('tab-registro').classList.toggle('bg-ink', !esEntrar);
-    document.getElementById('tab-registro').classList.toggle('text-paper', !esEntrar);
-    document.getElementById('tab-registro').classList.toggle('text-ink/60', esEntrar);
+    document.getElementById('tab-entrar').classList.toggle('bg-sky', esEntrar);
+    document.getElementById('tab-entrar').classList.toggle('text-night', esEntrar);
+    document.getElementById('tab-entrar').classList.toggle('text-mist', !esEntrar);
+    document.getElementById('tab-registro').classList.toggle('bg-sky', !esEntrar);
+    document.getElementById('tab-registro').classList.toggle('text-night', !esEntrar);
+    document.getElementById('tab-registro').classList.toggle('text-mist', esEntrar);
   }
 
   async function registrarse() {
@@ -244,21 +240,32 @@
 
   function stepperHtml(estadoActual) {
     const idx = ETAPAS.indexOf(estadoActual);
-    return ETAPAS.map((etapa, i) => {
-      const done = i <= idx;
-      return `
-        <div class="flex-1 flex flex-col items-center relative">
-          ${i > 0 ? `<div class="absolute top-3 right-1/2 w-full h-0.5 ${i <= idx ? 'bg-teal' : 'bg-ink/10'}"></div>` : ''}
-          <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold z-10 ${done ? 'bg-teal text-white' : 'bg-white border border-ink/20 text-ink/40'}">${i + 1}</div>
-          <span class="text-[11px] mt-2 font-medium ${done ? 'text-ink' : 'text-ink/40'}">${etapa}</span>
-        </div>`;
+    const pct = Math.max(0, idx) / (ETAPAS.length - 1) * 80;
+    const nodos = ETAPAS.map((etapa, i) => {
+      let nodo, etiqueta;
+      if (i < idx) {
+        nodo = '<span class="w-6 h-6 rounded-full bg-sky"></span>';
+        etiqueta = `<span class="text-sm text-mist">${etapa}</span>`;
+      } else if (i === idx) {
+        nodo = '<span class="w-6 h-6 rounded-full bg-panel border-[6px] border-sky"></span>';
+        etiqueta = `<b class="text-base sm:text-lg">${etapa}</b><span class="text-xs text-sky">${etapa === 'Entregado' ? 'Completado' : 'En curso'}</span>`;
+      } else {
+        nodo = '<span class="w-6 h-6 rounded-full bg-panel border-2 border-[#3A4A70]"></span>';
+        etiqueta = `<span class="text-sm text-dim">${etapa}</span>`;
+      }
+      return `<div class="relative flex flex-col items-center gap-3 text-center">${nodo}${etiqueta}</div>`;
     }).join('');
+    return `<div class="relative">
+      <div class="absolute top-3 left-[10%] right-[10%] h-0.5 bg-line"></div>
+      <div class="absolute top-3 left-[10%] h-0.5 bg-sky" style="width:${pct}%"></div>
+      <div class="grid grid-cols-5 relative">${nodos}</div>
+    </div>`;
   }
 
   async function cargarProyectos() {
     const lista = document.getElementById('proyectos-lista');
     const vacio = document.getElementById('sin-proyectos');
-    lista.innerHTML = '<p class="text-center text-ink/40 py-10">Cargando...</p>';
+    lista.innerHTML = '<p class="text-center text-dim py-10">Cargando...</p>';
     try {
       const res = await fetch(`/api/proyectos?clienteId=${sesion.id}`);
       const proyectos = await res.json();
@@ -273,23 +280,23 @@
 
       proyectos.forEach(p => {
         lista.insertAdjacentHTML('beforeend', `
-          <div class="bg-white rounded-2xl border border-ink/10 p-8">
-            <div class="flex items-center justify-between mb-8">
+          <div class="bg-panel rounded-xl border border-line p-6 sm:p-8">
+            <div class="flex items-start justify-between gap-4 mb-10">
               <div>
-                <p class="text-xs font-semibold text-teal uppercase tracking-wide">${p.tipo || 'Proyecto web'}</p>
-                <h2 class="font-serif text-2xl font-semibold mt-1">${p.nombre}</h2>
+                <p class="text-sm text-mist">${p.tipo || 'Proyecto web'}</p>
+                <h2 class="font-display text-3xl font-bold tracking-tight mt-1">${p.nombre}</h2>
               </div>
-              <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-teal/10 text-teal-dark">${p.estado}</span>
+              <span class="text-sm text-sky border border-sky px-3 py-1 rounded-full whitespace-nowrap">${p.estado}${p.estado === 'Entregado' ? '' : ' · En curso'}</span>
             </div>
-            <div class="flex mb-8">${stepperHtml(p.estado)}</div>
-            ${p.nota ? `<p class="text-sm text-ink/70 bg-paper rounded-xl p-4 mb-6 leading-relaxed"><i data-lucide="message-circle" class="w-4 h-4 inline mr-1 text-teal"></i> ${p.nota}</p>` : ''}
-            ${p.enlace ? `<a href="${p.enlace}" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-teal hover:text-teal-dark"><i data-lucide="external-link" class="w-4 h-4"></i> Ver sitio en línea</a>` : ''}
+            ${stepperHtml(p.estado)}
+            ${p.nota ? `<div class="mt-10 bg-night border border-line rounded-lg p-5"><p class="text-sm font-semibold mb-2 flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4 text-sky"></i> Nota del equipo</p><p class="text-mist leading-relaxed">${p.nota}</p></div>` : ''}
+            ${p.enlace ? `<a href="${p.enlace}" target="_blank" class="mt-6 inline-flex items-center gap-2 bg-sky text-night font-bold px-5 py-3 rounded-md hover:bg-sky-dark transition-colors"><i data-lucide="external-link" class="w-4 h-4"></i> Ver sitio en línea</a>` : ''}
           </div>
         `);
       });
       lucide.createIcons();
     } catch (e) {
-      lista.innerHTML = '<p class="text-center text-red-500 py-10">No se pudieron cargar tus proyectos.</p>';
+      lista.innerHTML = '<p class="text-center text-red-400 py-10">No se pudieron cargar tus proyectos.</p>';
     }
   }
 

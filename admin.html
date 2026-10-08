@@ -3,78 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="img/logo-icono.png">
 <title>Admin — Altus Code</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          ink: '#101820',
-          teal: { DEFAULT: '#1F6F63', dark: '#164F46', light: '#2E8C7D' },
-          gold: '#C9A227',
-          paper: '#EDEEEC',
-          paperdim: '#E3E4E0',
+          night: '#0B1020', panel: '#121A30', line: '#24304D',
+          mist: '#93A1C2', dim: '#7F8EB2', snow: '#E8EDF8',
+          sky: { DEFAULT: '#3BBCF6', dark: '#2A9AD1' },
         },
-        fontFamily: { serif: ['Fraunces', 'serif'], sans: ['"IBM Plex Sans"', 'sans-serif'] },
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          sans: ['"Space Grotesk"', 'sans-serif'],
+          mono: ['"IBM Plex Mono"', 'monospace'],
+        },
       }
     }
   }
 </script>
 <style>
-  body { font-family: 'IBM Plex Sans', sans-serif; background: #EDEEEC; color: #101820; }
-  .font-serif { font-family: 'Fraunces', serif; }
-  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #1F6F63; outline-offset: 2px; }
-  .tab-btn.active { background: #101820; color: #EDEEEC; }
+  body { font-family: 'Space Grotesk', sans-serif; background: #0B1020; color: #E8EDF8; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #3BBCF6; outline-offset: 2px; }
+  .tab-btn.active { background: #3BBCF6; color: #0B1020; }
 </style>
 </head>
 <body class="antialiased min-h-screen">
 
 <!-- LOGIN -->
 <div id="pantalla-login" class="min-h-screen flex items-center justify-center p-4">
-  <div class="bg-white rounded-3xl shadow-xl w-full max-w-sm p-10 border border-ink/10">
-    <div class="flex items-center gap-2 mb-8">
-      <span class="w-8 h-8 rounded-full bg-ink flex items-center justify-center"><span class="w-2.5 h-2.5 rounded-full bg-gold"></span></span>
-      <span class="font-serif text-xl font-semibold">Altus Code</span>
+  <div class="bg-panel rounded-xl w-full max-w-sm p-10 border border-line">
+    <div class="flex items-center gap-3.5 mb-8">
+      <img src="img/logo-icono.png" alt="Altus Code" class="w-10 h-10 rounded-[10px] ring-1 ring-[#2B3A5E]"><img src="img/logo-letras.png" alt="" class="h-[18px] w-auto">
     </div>
-    <h1 class="font-serif text-2xl font-semibold mb-1">Panel de administración</h1>
-    <p class="text-sm text-ink/60 mb-8">Solo para el equipo de la agencia.</p>
+    <h1 class="font-display text-2xl font-semibold mb-1">Panel de administración</h1>
+    <p class="text-sm text-mist mb-8">Solo para el equipo de la agencia.</p>
     <form id="login-form" class="space-y-4" onsubmit="event.preventDefault(); iniciarSesion();">
       <div>
-        <label class="text-sm font-medium text-ink/70">Correo</label>
-        <input id="login-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <label class="text-sm font-medium text-mist">Correo</label>
+        <input id="login-correo" type="email" required class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Contraseña</label>
-        <input id="login-pass" type="password" required class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <label class="text-sm font-medium text-mist">Contraseña</label>
+        <input id="login-pass" type="password" required class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
       </div>
-      <p id="login-error" class="text-sm text-red-600 hidden"></p>
-      <button type="submit" class="w-full bg-teal text-white font-semibold py-3.5 rounded-xl hover:bg-teal-dark transition-colors">Entrar</button>
+      <p id="login-error" class="text-sm text-red-400 hidden"></p>
+      <button type="submit" class="w-full bg-sky text-night font-semibold py-3.5 rounded-lg hover:bg-sky-dark transition-colors">Entrar</button>
     </form>
   </div>
 </div>
 
 <!-- PANEL -->
 <div id="pantalla-panel" class="hidden min-h-screen flex-col">
-  <header class="bg-white border-b border-ink/10 sticky top-0 z-10">
+  <header class="bg-panel border-b border-line sticky top-0 z-10">
     <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="w-8 h-8 rounded-full bg-ink flex items-center justify-center"><span class="w-2.5 h-2.5 rounded-full bg-gold"></span></span>
-        <span class="font-serif text-lg font-semibold">Admin</span>
+      <div class="flex items-center gap-3.5">
+        <img src="img/logo-icono.png" alt="Altus Code" class="w-10 h-10 rounded-[10px] ring-1 ring-[#2B3A5E]"><img src="img/logo-letras.png" alt="" class="h-[18px] w-auto"><span class="text-xs text-mist border border-line px-2 py-0.5 rounded-md ml-1">Admin</span>
       </div>
-      <button onclick="cerrarSesion()" class="text-sm font-semibold text-ink/60 hover:text-ink flex items-center gap-1.5">
+      <button onclick="cerrarSesion()" class="text-sm font-semibold text-mist hover:text-snow flex items-center gap-1.5">
         <i data-lucide="log-out" class="w-4 h-4"></i> Salir
       </button>
     </div>
   </header>
 
   <div class="max-w-6xl mx-auto px-6 pt-6 flex gap-2">
-    <button onclick="cambiarTab('proyectos')" id="tab-proyectos" class="tab-btn active px-4 py-2 rounded-full text-sm font-semibold transition-colors">Proyectos</button>
-    <button onclick="cambiarTab('clientes')" id="tab-clientes" class="tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors text-ink/60">Clientes</button>
-    <button onclick="cambiarTab('mensajes')" id="tab-mensajes" class="tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors text-ink/60">Mensajes <span id="badge-mensajes" class="hidden ml-1 bg-teal text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full"></span></button>
+    <button onclick="cambiarTab('proyectos')" id="tab-proyectos" class="tab-btn active px-4 py-2 rounded-md text-sm font-semibold transition-colors">Proyectos</button>
+    <button onclick="cambiarTab('clientes')" id="tab-clientes" class="tab-btn px-4 py-2 rounded-md text-sm font-semibold transition-colors text-mist">Clientes</button>
+    <button onclick="cambiarTab('mensajes')" id="tab-mensajes" class="tab-btn px-4 py-2 rounded-md text-sm font-semibold transition-colors text-mist">Mensajes <span id="badge-mensajes" class="hidden ml-1 bg-sky text-night text-[10px] font-bold px-1.5 py-0.5 rounded-full"></span></button>
   </div>
 
   <main class="max-w-6xl mx-auto px-6 py-8 w-full flex-1">
@@ -82,14 +82,14 @@
     <!-- TAB PROYECTOS -->
     <div id="view-proyectos">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="font-serif text-2xl font-semibold">Proyectos</h2>
-        <button onclick="abrirModal('modal-proyecto')" class="bg-teal text-white text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-teal-dark transition-colors flex items-center gap-2">
+        <h2 class="font-display text-2xl font-semibold">Proyectos</h2>
+        <button onclick="abrirModal('modal-proyecto')" class="bg-sky text-night text-sm font-semibold px-4 py-2.5 rounded-md hover:bg-sky-dark transition-colors flex items-center gap-2">
           <i data-lucide="plus" class="w-4 h-4"></i> Nuevo proyecto
         </button>
       </div>
-      <div class="bg-white rounded-2xl border border-ink/10 overflow-hidden">
+      <div class="bg-panel rounded-xl border border-line overflow-hidden">
         <table class="w-full text-sm">
-          <thead class="bg-paperdim text-ink/60 text-xs uppercase tracking-wide">
+          <thead class="bg-night text-mist text-sm">
             <tr>
               <th class="text-left p-4">Proyecto</th>
               <th class="text-left p-4">Cliente</th>
@@ -106,14 +106,14 @@
     <!-- TAB CLIENTES -->
     <div id="view-clientes" class="hidden">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="font-serif text-2xl font-semibold">Clientes</h2>
-        <button onclick="abrirModal('modal-cliente')" class="bg-teal text-white text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-teal-dark transition-colors flex items-center gap-2">
+        <h2 class="font-display text-2xl font-semibold">Clientes</h2>
+        <button onclick="abrirModal('modal-cliente')" class="bg-sky text-night text-sm font-semibold px-4 py-2.5 rounded-md hover:bg-sky-dark transition-colors flex items-center gap-2">
           <i data-lucide="plus" class="w-4 h-4"></i> Nuevo cliente
         </button>
       </div>
-      <div class="bg-white rounded-2xl border border-ink/10 overflow-hidden">
+      <div class="bg-panel rounded-xl border border-line overflow-hidden">
         <table class="w-full text-sm">
-          <thead class="bg-paperdim text-ink/60 text-xs uppercase tracking-wide">
+          <thead class="bg-night text-mist text-sm">
             <tr>
               <th class="text-left p-4">Nombre</th>
               <th class="text-left p-4">Correo</th>
@@ -129,8 +129,8 @@
     <div id="view-mensajes" class="hidden">
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h2 class="font-serif text-2xl font-semibold">Mensajes</h2>
-          <p class="text-sm text-ink/50 mt-1">Lo que la gente escribió en el formulario de contacto de la página principal: qué proyecto quiere y sus detalles.</p>
+          <h2 class="font-display text-2xl font-semibold">Mensajes</h2>
+          <p class="text-sm text-mist mt-1">Lo que la gente escribió en el formulario de contacto de la página principal: qué proyecto quiere y sus detalles.</p>
         </div>
       </div>
       <div id="lista-mensajes" class="space-y-4"></div>
@@ -139,47 +139,47 @@
 </div>
 
 <!-- MODAL NUEVO PROYECTO -->
-<div id="modal-proyecto" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-  <div class="bg-white rounded-2xl p-8 max-w-md w-full">
-    <h3 class="font-serif text-xl font-semibold mb-6">Nuevo proyecto</h3>
+<div id="modal-proyecto" class="hidden fixed inset-0 bg-night/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+  <div class="bg-panel rounded-xl p-8 max-w-md w-full">
+    <h3 class="font-display text-xl font-semibold mb-6">Nuevo proyecto</h3>
     <div class="space-y-4">
       <div>
-        <label class="text-sm font-medium text-ink/70">Nombre del proyecto</label>
-        <input id="np-nombre" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <label class="text-sm font-medium text-mist">Nombre del proyecto</label>
+        <input id="np-nombre" type="text" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Cliente</label>
-        <select id="np-cliente" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none"></select>
+        <label class="text-sm font-medium text-mist">Cliente</label>
+        <select id="np-cliente" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none"></select>
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Tipo</label>
-        <select id="np-tipo" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <label class="text-sm font-medium text-mist">Tipo</label>
+        <select id="np-tipo" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
           <option>Página de presentación</option>
           <option>Tienda o sitio completo</option>
           <option>Panel a medida</option>
         </select>
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Nota para el cliente (opcional)</label>
-        <textarea id="np-nota" rows="2" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none"></textarea>
+        <label class="text-sm font-medium text-mist">Nota para el cliente (opcional)</label>
+        <textarea id="np-nota" rows="2" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none"></textarea>
       </div>
     </div>
     <div class="flex gap-3 mt-6">
-      <button onclick="cerrarModal('modal-proyecto')" class="flex-1 py-3 rounded-xl border border-ink/15 font-semibold hover:bg-paper">Cancelar</button>
-      <button onclick="crearProyecto()" class="flex-1 py-3 rounded-xl bg-teal text-white font-semibold hover:bg-teal-dark">Guardar</button>
+      <button onclick="cerrarModal('modal-proyecto')" class="flex-1 py-3 rounded-lg border border-line font-semibold hover:bg-night">Cancelar</button>
+      <button onclick="crearProyecto()" class="flex-1 py-3 rounded-lg bg-sky text-night font-semibold hover:bg-sky-dark">Guardar</button>
     </div>
   </div>
 </div>
 
 <!-- MODAL EDITAR PROYECTO -->
-<div id="modal-editar-proyecto" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-  <div class="bg-white rounded-2xl p-8 max-w-md w-full">
-    <h3 class="font-serif text-xl font-semibold mb-6">Actualizar avance</h3>
+<div id="modal-editar-proyecto" class="hidden fixed inset-0 bg-night/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+  <div class="bg-panel rounded-xl p-8 max-w-md w-full">
+    <h3 class="font-display text-xl font-semibold mb-6">Actualizar avance</h3>
     <input type="hidden" id="ep-id">
     <div class="space-y-4">
       <div>
-        <label class="text-sm font-medium text-ink/70">Estado</label>
-        <select id="ep-estado" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <label class="text-sm font-medium text-mist">Estado</label>
+        <select id="ep-estado" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
           <option>Brief</option>
           <option>Diseño</option>
           <option>Desarrollo</option>
@@ -188,43 +188,43 @@
         </select>
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Nota para el cliente</label>
-        <textarea id="ep-nota" rows="2" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none"></textarea>
+        <label class="text-sm font-medium text-mist">Nota para el cliente</label>
+        <textarea id="ep-nota" rows="2" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none"></textarea>
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Enlace del sitio (opcional)</label>
-        <input id="ep-enlace" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <label class="text-sm font-medium text-mist">Enlace del sitio (opcional)</label>
+        <input id="ep-enlace" type="text" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
       </div>
     </div>
     <div class="flex gap-3 mt-6">
-      <button onclick="cerrarModal('modal-editar-proyecto')" class="flex-1 py-3 rounded-xl border border-ink/15 font-semibold hover:bg-paper">Cancelar</button>
-      <button onclick="guardarEdicionProyecto()" class="flex-1 py-3 rounded-xl bg-teal text-white font-semibold hover:bg-teal-dark">Guardar</button>
+      <button onclick="cerrarModal('modal-editar-proyecto')" class="flex-1 py-3 rounded-lg border border-line font-semibold hover:bg-night">Cancelar</button>
+      <button onclick="guardarEdicionProyecto()" class="flex-1 py-3 rounded-lg bg-sky text-night font-semibold hover:bg-sky-dark">Guardar</button>
     </div>
   </div>
 </div>
 
 <!-- MODAL NUEVO CLIENTE -->
-<div id="modal-cliente" class="hidden fixed inset-0 bg-ink/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-  <div class="bg-white rounded-2xl p-8 max-w-md w-full">
-    <h3 class="font-serif text-xl font-semibold mb-6">Nuevo cliente</h3>
+<div id="modal-cliente" class="hidden fixed inset-0 bg-night/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+  <div class="bg-panel rounded-xl p-8 max-w-md w-full">
+    <h3 class="font-display text-xl font-semibold mb-6">Nuevo cliente</h3>
     <div class="space-y-4">
       <div>
-        <label class="text-sm font-medium text-ink/70">Nombre</label>
-        <input id="nc-nombre" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <label class="text-sm font-medium text-mist">Nombre</label>
+        <input id="nc-nombre" type="text" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Correo</label>
-        <input id="nc-correo" type="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
+        <label class="text-sm font-medium text-mist">Correo</label>
+        <input id="nc-correo" type="email" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
       </div>
       <div>
-        <label class="text-sm font-medium text-ink/70">Contraseña inicial</label>
-        <input id="nc-pass" type="text" class="mt-1 w-full px-4 py-3 rounded-xl border border-ink/15 focus:border-teal outline-none">
-        <p class="text-xs text-ink/40 mt-1">Se guarda cifrada — dísela al cliente ahora, después ni tú podrás verla. Lo ideal es que el cliente se registre solo desde el sitio.</p>
+        <label class="text-sm font-medium text-mist">Contraseña inicial</label>
+        <input id="nc-pass" type="text" class="mt-1 w-full px-4 py-3 rounded-lg bg-night text-snow border border-line focus:border-sky outline-none">
+        <p class="text-xs text-dim mt-1">Se guarda cifrada — dísela al cliente ahora, después ni tú podrás verla. Lo ideal es que el cliente se registre solo desde el sitio.</p>
       </div>
     </div>
     <div class="flex gap-3 mt-6">
-      <button onclick="cerrarModal('modal-cliente')" class="flex-1 py-3 rounded-xl border border-ink/15 font-semibold hover:bg-paper">Cancelar</button>
-      <button onclick="crearCliente()" class="flex-1 py-3 rounded-xl bg-teal text-white font-semibold hover:bg-teal-dark">Guardar</button>
+      <button onclick="cerrarModal('modal-cliente')" class="flex-1 py-3 rounded-lg border border-line font-semibold hover:bg-night">Cancelar</button>
+      <button onclick="crearCliente()" class="flex-1 py-3 rounded-lg bg-sky text-night font-semibold hover:bg-sky-dark">Guardar</button>
     </div>
   </div>
 </div>
@@ -273,14 +273,14 @@
     ['proyectos', 'clientes', 'mensajes'].forEach(t => {
       document.getElementById('view-' + t).classList.toggle('hidden', t !== tab);
       document.getElementById('tab-' + t).classList.toggle('active', t === tab);
-      document.getElementById('tab-' + t).classList.toggle('text-ink/60', t !== tab);
+      document.getElementById('tab-' + t).classList.toggle('text-mist', t !== tab);
     });
   }
 
   // ---- CLIENTES ----
   async function cargarClientes() {
     const tbody = document.getElementById('tabla-clientes');
-    tbody.innerHTML = '<tr><td colspan="3" class="p-6 text-center text-ink/40">Cargando...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3" class="p-6 text-center text-dim">Cargando...</td></tr>';
     try {
       const res = await fetch('/api/clientes');
       clientesCache = await res.json();
@@ -289,15 +289,15 @@
       select.innerHTML = clientesCache.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
       clientesCache.forEach(c => {
         tbody.insertAdjacentHTML('beforeend', `
-          <tr class="border-t border-ink/5">
+          <tr class="border-t border-line">
             <td class="p-4 font-semibold">${c.nombre}</td>
-            <td class="p-4 text-ink/60">${c.correo}</td>
-            <td class="p-4 text-right"><button onclick="eliminarCliente(${c.id})" class="text-ink/40 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+            <td class="p-4 text-mist">${c.correo}</td>
+            <td class="p-4 text-right"><button onclick="eliminarCliente(${c.id})" class="text-dim hover:text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
           </tr>
         `);
       });
       lucide.createIcons();
-    } catch (e) { tbody.innerHTML = '<tr><td colspan="3" class="p-6 text-center text-red-500">Error al cargar clientes.</td></tr>'; }
+    } catch (e) { tbody.innerHTML = '<tr><td colspan="3" class="p-6 text-center text-red-400">Error al cargar clientes.</td></tr>'; }
   }
 
   async function crearCliente() {
@@ -328,31 +328,31 @@
   // ---- PROYECTOS ----
   async function cargarProyectos() {
     const tbody = document.getElementById('tabla-proyectos');
-    tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-ink/40">Cargando...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-dim">Cargando...</td></tr>';
     try {
       const res = await fetch('/api/proyectos');
       proyectosCache = await res.json();
       tbody.innerHTML = '';
       if (proyectosCache.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-ink/40">Todavía no hay proyectos.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-dim">Todavía no hay proyectos.</td></tr>';
         return;
       }
       proyectosCache.forEach(p => {
         tbody.insertAdjacentHTML('beforeend', `
-          <tr class="border-t border-ink/5">
-            <td class="p-4 font-semibold">${p.nombre}<div class="text-xs text-ink/40 font-normal">${p.tipo || ''}</div></td>
-            <td class="p-4 text-ink/60">${p.cliente_nombre || '—'}</td>
-            <td class="p-4"><span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-teal/10 text-teal-dark">${p.estado}</span></td>
-            <td class="p-4 text-ink/50 max-w-[200px] truncate">${p.nota || '—'}</td>
+          <tr class="border-t border-line">
+            <td class="p-4 font-semibold">${p.nombre}<div class="text-xs text-dim font-normal">${p.tipo || ''}</div></td>
+            <td class="p-4 text-mist">${p.cliente_nombre || '—'}</td>
+            <td class="p-4"><span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-sky/15 text-sky">${p.estado}</span></td>
+            <td class="p-4 text-mist max-w-[200px] truncate">${p.nota || '—'}</td>
             <td class="p-4 text-right flex justify-end gap-2">
-              <button onclick="abrirEditarProyecto(${p.id})" class="text-ink/40 hover:text-teal" title="Editar"><i data-lucide="pencil" class="w-4 h-4"></i></button>
-              <button onclick="eliminarProyecto(${p.id})" class="text-ink/40 hover:text-red-600" title="Eliminar"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+              <button onclick="abrirEditarProyecto(${p.id})" class="text-dim hover:text-sky" title="Editar"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button onclick="eliminarProyecto(${p.id})" class="text-dim hover:text-red-400" title="Eliminar"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
             </td>
           </tr>
         `);
       });
       lucide.createIcons();
-    } catch (e) { tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-red-500">Error al cargar proyectos.</td></tr>'; }
+    } catch (e) { tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-red-400">Error al cargar proyectos.</td></tr>'; }
   }
 
   async function crearProyecto() {
@@ -411,7 +411,7 @@
 
   async function cargarMensajes() {
     const cont = document.getElementById('lista-mensajes');
-    cont.innerHTML = '<p class="text-center text-ink/40 py-10">Cargando...</p>';
+    cont.innerHTML = '<p class="text-center text-dim py-10">Cargando...</p>';
     try {
       const res = await fetch('/api/contactos');
       mensajesCache = await res.json();
@@ -423,27 +423,27 @@
         badge.classList.add('hidden');
       }
       if (mensajesCache.length === 0) {
-        cont.innerHTML = '<div class="bg-white rounded-2xl border border-ink/10 p-10 text-center text-ink/40">Todavía no hay mensajes.</div>';
+        cont.innerHTML = '<div class="bg-panel rounded-xl border border-line p-10 text-center text-dim">Todavía no hay mensajes.</div>';
         return;
       }
       cont.innerHTML = '';
       mensajesCache.forEach(m => {
         const fecha = m.created_at ? new Date(m.created_at).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' }) : '';
         cont.insertAdjacentHTML('beforeend', `
-          <div class="bg-white rounded-2xl border border-ink/10 p-6">
+          <div class="bg-panel rounded-xl border border-line p-6">
             <div class="flex items-start justify-between gap-4 mb-3">
               <div>
                 <p class="font-semibold">${m.nombre}</p>
-                <p class="text-sm text-teal">${m.correo}</p>
+                <p class="text-sm text-sky">${m.correo}</p>
               </div>
-              <span class="text-xs text-ink/40 whitespace-nowrap">${fecha}</span>
+              <span class="text-xs text-dim whitespace-nowrap">${fecha}</span>
             </div>
-            <p class="text-sm text-ink/70 bg-paper rounded-xl p-4 leading-relaxed whitespace-pre-wrap">${m.mensaje}</p>
+            <p class="text-sm text-mist bg-night rounded-lg p-4 leading-relaxed whitespace-pre-wrap">${m.mensaje}</p>
             <div class="flex gap-3 mt-4">
-              <button onclick="usarMensajeParaProyecto(${m.id})" class="text-sm font-semibold text-teal hover:text-teal-dark flex items-center gap-1.5">
+              <button onclick="usarMensajeParaProyecto(${m.id})" class="text-sm font-semibold text-sky hover:text-snow flex items-center gap-1.5">
                 <i data-lucide="folder-plus" class="w-4 h-4"></i> Crear proyecto con esto
               </button>
-              <button onclick="eliminarMensaje(${m.id})" class="text-sm font-semibold text-ink/40 hover:text-red-600 flex items-center gap-1.5">
+              <button onclick="eliminarMensaje(${m.id})" class="text-sm font-semibold text-dim hover:text-red-400 flex items-center gap-1.5">
                 <i data-lucide="trash-2" class="w-4 h-4"></i> Eliminar
               </button>
             </div>
@@ -452,7 +452,7 @@
       });
       lucide.createIcons();
     } catch (e) {
-      cont.innerHTML = '<p class="text-center text-red-500 py-10">No se pudieron cargar los mensajes.</p>';
+      cont.innerHTML = '<p class="text-center text-red-400 py-10">No se pudieron cargar los mensajes.</p>';
     }
   }
 
