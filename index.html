@@ -35,6 +35,16 @@
     background-image: linear-gradient(#ffffff0d 1px, transparent 1px), linear-gradient(90deg, #ffffff0d 1px, transparent 1px);
     background-size: 48px 48px;
   }
+  /* Brillo azul al pasar el cursor */
+  .card-glow { transition: border-color .2s, box-shadow .2s; }
+  .card-glow:hover { border-color: #3BBCF6; box-shadow: 0 0 0 1px rgba(59,188,246,.45), 0 0 32px rgba(59,188,246,.18); }
+  .cell-glow { transition: background-color .2s, box-shadow .2s; }
+  .cell-glow:hover { background-color: rgba(59,188,246,.08); box-shadow: inset 0 0 0 1px rgba(59,188,246,.6), 0 0 24px rgba(59,188,246,.15); }
+  a.bg-sky, button.bg-sky { transition: box-shadow .2s, background-color .2s; }
+  a.bg-sky:hover, button.bg-sky:hover { box-shadow: 0 0 22px rgba(59,188,246,.6); }
+  a.border.border-line, button.border.border-line { transition: border-color .2s, box-shadow .2s; }
+  a.border.border-line:hover, button.border.border-line:hover { border-color: #3BBCF6; box-shadow: 0 0 18px rgba(59,188,246,.35); }
+  @media (prefers-reduced-motion: reduce) { .card-glow, .cell-glow, a, button { transition: none !important; } }
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid #3BBCF6; outline-offset: 2px; }
 </style>
 </head>
@@ -73,7 +83,7 @@
     </div>
 
     <!-- Panel: así ve el cliente su proyecto -->
-    <div class="bg-panel border border-line rounded-xl p-7">
+    <div class="card-glow bg-panel border border-line rounded-xl p-7">
       <div class="flex items-center justify-between mb-6">
         <span class="font-bold text-lg">Sitio de tu negocio</span>
         <span class="text-sm text-sky border border-sky px-3 py-0.5 rounded-full">En curso</span>
@@ -98,9 +108,9 @@
   <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Tres formas de empezar</h2>
   <p class="mt-3 text-mist max-w-xl leading-relaxed">Cada negocio necesita algo distinto. Elegimos el alcance correcto para el tuyo, no el más caro.</p>
   <div class="mt-12 grid md:grid-cols-3 border border-line rounded-xl overflow-hidden bg-panel">
-    <div class="p-9"><h3 class="font-bold text-2xl">Página de presentación</h3><p class="text-mist leading-relaxed mt-3">Una sola página para presentar tu negocio, captar clientes y verte profesional desde el día uno.</p></div>
-    <div class="p-9 md:border-l border-t md:border-t-0 border-line"><h3 class="font-bold text-2xl">Tienda o sitio completo</h3><p class="text-mist leading-relaxed mt-3">Catálogo, carrito, pagos en línea y las páginas que tu operación necesite, conectados a una base de datos real.</p></div>
-    <div class="p-9 md:border-l border-t md:border-t-0 border-line"><h3 class="font-bold text-2xl">Panel a medida</h3><p class="text-mist leading-relaxed mt-3">Sistemas internos para tu equipo: pedidos, inventario, repartidores o lo que tu negocio necesite ordenar.</p></div>
+    <div class="cell-glow p-9"><h3 class="font-bold text-2xl">Página de presentación</h3><p class="text-mist leading-relaxed mt-3">Una sola página para presentar tu negocio, captar clientes y verte profesional desde el día uno.</p></div>
+    <div class="cell-glow p-9 md:border-l border-t md:border-t-0 border-line"><h3 class="font-bold text-2xl">Tienda o sitio completo</h3><p class="text-mist leading-relaxed mt-3">Catálogo, carrito, pagos en línea y las páginas que tu operación necesite, conectados a una base de datos real.</p></div>
+    <div class="cell-glow p-9 md:border-l border-t md:border-t-0 border-line"><h3 class="font-bold text-2xl">Panel a medida</h3><p class="text-mist leading-relaxed mt-3">Sistemas internos para tu equipo: pedidos, inventario, repartidores o lo que tu negocio necesite ordenar.</p></div>
   </div>
 </section>
 
@@ -121,8 +131,8 @@
   <div class="max-w-6xl mx-auto px-6 py-24">
     <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Trabajo reciente</h2>
     <p class="mt-3 text-mist max-w-xl leading-relaxed">Un ejemplo real, con tienda, pagos y tres paneles operativos distintos.</p>
-    <div class="mt-12 grid lg:grid-cols-[1fr_1.2fr] border border-line rounded-xl overflow-hidden bg-night">
-      <div class="p-9">
+    <div class="mt-12 grid lg:grid-cols-[1fr_1.2fr] card-glow border border-line rounded-xl overflow-hidden bg-night">
+      <div class="cell-glow p-9">
         <p class="text-sm text-sky mb-3">Pastelería · e-commerce</p>
         <h3 class="font-bold text-3xl mb-4">Delicias de Campeche</h3>
         <p class="text-mist leading-relaxed mb-6">Tienda en línea con carrito, pagos con Mercado Pago, y paneles independientes para administración, cocina y reparto — cada quien ve solo lo que necesita.</p>
@@ -146,7 +156,7 @@
   <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Precios claros</h2>
   <p class="mt-3 text-mist max-w-xl leading-relaxed">Sin letras chiquitas. El precio final se confirma en el brief según el alcance real.</p>
   <div class="mt-12 grid md:grid-cols-3 gap-5">
-    <div class="border border-line rounded-xl p-8">
+    <div class="card-glow border border-line rounded-xl p-8">
       <h3 class="text-mist">Presencia</h3>
       <p class="font-bold text-4xl mt-2">desde $6,500<span class="text-base font-normal text-dim"> MXN</span></p>
       <p class="text-mist mt-2 mb-6">Página única, lista en 1–2 semanas.</p>
@@ -156,7 +166,7 @@
         <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1"></i>Dominio y hosting configurados</li>
       </ul>
     </div>
-    <div class="border-2 border-sky bg-panel rounded-xl p-8">
+    <div class="card-glow border-2 border-sky bg-panel rounded-xl p-8">
       <h3 class="text-sky">Operación · Más elegido</h3>
       <p class="font-bold text-4xl mt-2">desde $18,000<span class="text-base font-normal text-dim"> MXN</span></p>
       <p class="text-mist mt-2 mb-6">Tienda o sitio completo con base de datos.</p>
@@ -166,7 +176,7 @@
         <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1"></i>Panel de administración propio</li>
       </ul>
     </div>
-    <div class="border border-line rounded-xl p-8">
+    <div class="card-glow border border-line rounded-xl p-8">
       <h3 class="text-mist">A medida</h3>
       <p class="font-bold text-4xl mt-2">cotización</p>
       <p class="text-mist mt-2 mb-6">Sistemas con varios paneles y roles.</p>
