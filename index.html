@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Altus Code — Software a medida para tu negocio</title>
-<meta name="description" content="Diseñamos y construimos sitios web, tiendas y paneles a medida, con el avance de tu proyecto visible en cada etapa.">
+<title>Altus Code — Páginas web para negocios de Campeche</title>
+<meta name="description" content="Diseñamos hoy la web donde estará tu futuro. Páginas web funcionales, catálogos digitales y sistemas de citas para negocios de Campeche.">
 <link rel="icon" href="img/logo-icono.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,34 +48,35 @@
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid #3BBCF6; outline-offset: 2px; }
 </style>
 </head>
-<body class="antialiased">
+<body class="antialiased overflow-x-hidden">
 
 <!-- NAV -->
 <header class="sticky top-0 z-40 bg-night/90 backdrop-blur border-b border-line">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-3.5"><img src="img/logo-icono.png" alt="Altus Code" class="w-10 h-10 rounded-[10px] ring-1 ring-[#2B3A5E]"><img src="img/logo-letras.png" alt="" class="h-[18px] w-auto"></a>
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-3">
+    <a href="index.html" class="flex items-center gap-3.5"><img src="img/logo-icono.png" alt="Altus Code" class="w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] ring-1 ring-[#2B3A5E]"><img src="img/logo-letras.png" alt="" class="h-[14px] sm:h-[18px] w-auto"></a>
     <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-mist">
       <a href="#servicios" class="hover:text-snow transition-colors">Servicios</a>
       <a href="#proceso" class="hover:text-snow transition-colors">Cómo trabajamos</a>
       <a href="#casos" class="hover:text-snow transition-colors">Casos</a>
+      <a href="#nosotros" class="hover:text-snow transition-colors">Nosotros</a>
       <a href="#precios" class="hover:text-snow transition-colors">Precios</a>
     </nav>
     <div class="flex items-center gap-4">
       <a href="dashboard.html" id="nav-acceso-clientes" class="hidden sm:inline text-sm font-medium text-mist hover:text-snow transition-colors">Acceso clientes</a>
-      <a href="#contacto" class="text-sm font-bold bg-sky text-night px-5 py-2.5 rounded-md hover:bg-sky-dark transition-colors">Cuéntanos tu proyecto</a>
+      <a href="#contacto" class="text-sm font-bold bg-sky text-night px-4 sm:px-5 py-2.5 rounded-md hover:bg-sky-dark transition-colors whitespace-nowrap"><span class="sm:hidden">Contacto</span><span class="hidden sm:inline">Cuéntanos tu proyecto</span></a>
     </div>
   </div>
   <nav class="md:hidden flex gap-6 overflow-x-auto px-6 pb-3 text-sm text-mist">
-    <a href="#servicios">Servicios</a><a href="#proceso">Cómo trabajamos</a><a href="#casos">Casos</a><a href="#precios">Precios</a>
+    <a href="#servicios">Servicios</a><a href="#proceso">Cómo trabajamos</a><a href="#casos">Casos</a><a href="#nosotros">Nosotros</a><a href="#precios">Precios</a>
   </nav>
 </header>
 
 <!-- HERO -->
 <section class="grid-bg border-b border-line">
-  <div class="max-w-6xl mx-auto px-6 pt-20 pb-24 grid lg:grid-cols-[1.15fr_1fr] gap-14 items-center">
+  <div class="max-w-6xl mx-auto px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 grid lg:grid-cols-[1.15fr_1fr] gap-14 items-center">
     <div>
-      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-[-0.035em]">Software a medida, con avance visible en cada etapa.</h1>
-      <p class="mt-7 text-lg text-mist max-w-lg leading-relaxed">Construimos sitios, tiendas y paneles para negocios. Tú sigues cada entrega desde tu propio panel.</p>
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-[-0.035em]">Diseñamos hoy la web donde estará tu futuro.</h1>
+      <p class="mt-7 text-lg text-mist max-w-lg leading-relaxed">Páginas web funcionales, catálogos digitales y sistemas de citas para los negocios de Campeche. Tú sigues cada entrega desde tu propio panel.</p>
       <div class="mt-9 flex flex-wrap gap-4">
         <a href="#contacto" class="bg-sky text-night px-7 py-3.5 rounded-md font-bold hover:bg-sky-dark transition-colors">Solicitar una propuesta</a>
         <a href="#casos" class="px-7 py-3.5 rounded-md font-semibold border border-line hover:border-mist transition-colors">Ver trabajo reciente</a>
@@ -104,18 +105,18 @@
 </section>
 
 <!-- SERVICIOS -->
-<section id="servicios" class="max-w-6xl mx-auto px-6 py-24">
+<section id="servicios" class="max-w-6xl mx-auto px-6 py-16 sm:py-24">
   <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Tres formas de empezar</h2>
   <p class="mt-3 text-mist max-w-xl leading-relaxed">Cada negocio necesita algo distinto. Elegimos el alcance correcto para el tuyo, no el más caro.</p>
   <div class="mt-12 grid md:grid-cols-3 border border-line rounded-xl overflow-hidden bg-panel">
-    <div class="cell-glow p-9"><h3 class="font-bold text-2xl">Página de presentación</h3><p class="text-mist leading-relaxed mt-3">Una sola página para presentar tu negocio, captar clientes y verte profesional desde el día uno.</p></div>
-    <div class="cell-glow p-9 md:border-l border-t md:border-t-0 border-line"><h3 class="font-bold text-2xl">Tienda o sitio completo</h3><p class="text-mist leading-relaxed mt-3">Catálogo, carrito, pagos en línea y las páginas que tu operación necesite, conectados a una base de datos real.</p></div>
-    <div class="cell-glow p-9 md:border-l border-t md:border-t-0 border-line"><h3 class="font-bold text-2xl">Panel a medida</h3><p class="text-mist leading-relaxed mt-3">Sistemas internos para tu equipo: pedidos, inventario, repartidores o lo que tu negocio necesite ordenar.</p></div>
+    <div class="cell-glow p-7 sm:p-9"><h3 class="font-bold text-2xl">Página de presentación</h3><p class="text-mist leading-relaxed mt-3">Una sola página para presentar tu negocio, captar clientes y verte profesional desde el día uno.</p></div>
+    <div class="cell-glow p-7 sm:p-9 md:border-l border-t md:border-t-0 border-line"><h3 class="font-bold text-2xl">Tienda o sitio completo</h3><p class="text-mist leading-relaxed mt-3">Catálogo, carrito, pagos en línea y las páginas que tu operación necesite, conectados a una base de datos real.</p></div>
+    <div class="cell-glow p-7 sm:p-9 md:border-l border-t md:border-t-0 border-line"><h3 class="font-bold text-2xl">Panel a medida</h3><p class="text-mist leading-relaxed mt-3">Sistemas internos para tu equipo: pedidos, inventario, repartidores o lo que tu negocio necesite ordenar.</p></div>
   </div>
 </section>
 
 <!-- PROCESO -->
-<section id="proceso" class="max-w-6xl mx-auto px-6 pb-24">
+<section id="proceso" class="max-w-6xl mx-auto px-6 pb-16 sm:pb-24">
   <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Cómo trabajamos</h2>
   <p class="mt-3 text-mist max-w-xl leading-relaxed">Cuatro etapas, sin sorpresas. Ves el avance de tu proyecto en tu panel en todo momento.</p>
   <ol class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 lg:border-t-2 border-line">
@@ -128,11 +129,11 @@
 
 <!-- CASOS -->
 <section id="casos" class="border-y border-line bg-panel">
-  <div class="max-w-6xl mx-auto px-6 py-24">
+  <div class="max-w-6xl mx-auto px-6 py-16 sm:py-24">
     <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Trabajo reciente</h2>
     <p class="mt-3 text-mist max-w-xl leading-relaxed">Un ejemplo real, con tienda, pagos y tres paneles operativos distintos.</p>
     <div class="mt-12 grid lg:grid-cols-[1fr_1.2fr] card-glow border border-line rounded-xl overflow-hidden bg-night">
-      <div class="cell-glow p-9">
+      <div class="p-7 sm:p-9">
         <p class="text-sm text-sky mb-3">Pastelería · e-commerce</p>
         <h3 class="font-bold text-3xl mb-4">Delicias de Campeche</h3>
         <p class="text-mist leading-relaxed mb-6">Tienda en línea con carrito, pagos con Mercado Pago, y paneles independientes para administración, cocina y reparto — cada quien ve solo lo que necesita.</p>
@@ -143,22 +144,88 @@
         </ul>
       </div>
       <div class="grid grid-cols-3 gap-px bg-line">
-        <img src="img/delicias-1.jpg" alt="Página de inicio de Delicias de Campeche" class="w-full h-full min-h-[220px] object-cover object-top">
-        <img src="img/delicias-2.jpg" alt="Categorías del menú de Delicias de Campeche" class="w-full h-full min-h-[220px] object-cover object-top">
-        <img src="img/delicias-3.jpg" alt="Especialidades del menú de Delicias de Campeche" class="w-full h-full min-h-[220px] object-cover object-top">
+        <img src="img/delicias-1.jpg" alt="Página de inicio de Delicias de Campeche" class="w-full h-full min-h-[150px] sm:min-h-[220px] object-cover object-top">
+        <img src="img/delicias-2.jpg" alt="Categorías del menú de Delicias de Campeche" class="w-full h-full min-h-[150px] sm:min-h-[220px] object-cover object-top">
+        <img src="img/delicias-3.jpg" alt="Especialidades del menú de Delicias de Campeche" class="w-full h-full min-h-[150px] sm:min-h-[220px] object-cover object-top">
       </div>
     </div>
   </div>
 </section>
 
+<!-- NOSOTROS / VISIÓN -->
+<section id="nosotros" class="border-t border-line">
+  <div class="max-w-6xl mx-auto px-6 py-16 sm:py-24">
+
+    <div class="grid lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-14 items-center">
+      <div>
+        <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Hecha en Campeche, para el comercio campechano</h2>
+        <p class="mt-5 text-mist text-lg leading-relaxed max-w-xl">Somos una empresa 100% campechana. Ofrecemos un trato cercano y adaptado a las necesidades reales del comercio local.</p>
+      </div>
+      <div class="card-glow bg-panel border border-line rounded-xl p-7 sm:p-8">
+        <p class="text-5xl sm:text-6xl font-bold text-sky tracking-tight">15,000</p>
+        <p class="text-mist mt-3 leading-relaxed">empresas, aproximadamente, en el municipio de San Francisco de Campeche. Muchas no cuentan con una página web adecuada para vender más o darse a conocer.</p>
+      </div>
+    </div>
+
+    <div class="mt-16 sm:mt-20 grid lg:grid-cols-[1fr_1.4fr] gap-6 lg:gap-14">
+      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight">Nuestra visión</h3>
+      <p class="text-mist text-lg leading-relaxed">Hoy la tecnología es indispensable para automatizar tareas, consultar menús o agendar citas, y muchos negocios campechanos no logran dar a conocer lo que ofrecen. Buscamos precios accesibles y ajustables para pequeños, medianos y grandes empresarios, para que sus empresas den un salto económico y ayuden a expandir el comercio campechano.</p>
+    </div>
+
+    <div class="mt-16 sm:mt-20">
+      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight">Qué incluye cada página</h3>
+      <p class="mt-3 text-mist leading-relaxed max-w-2xl">Partimos de una página base y, sobre ella, agregamos las funciones que facilitan el acceso a tus clientes y la operación de tu negocio.</p>
+      <div class="mt-8 grid md:grid-cols-2 gap-5">
+        <div class="card-glow border border-line rounded-xl p-7 sm:p-8">
+          <h4 class="font-bold text-xl">En todas nuestras páginas</h4>
+          <ul class="text-mist space-y-3 mt-5">
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1 shrink-0"></i>Diseño responsivo: se ve bien desde cualquier dispositivo.</li>
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1 shrink-0"></i>Sección de contacto con tus redes sociales y números de teléfono.</li>
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1 shrink-0"></i>Formulario de contacto para que tus clientes te escriban directo.</li>
+          </ul>
+        </div>
+        <div class="card-glow border border-line rounded-xl p-7 sm:p-8 bg-panel">
+          <h4 class="font-bold text-xl">Modelo avanzado</h4>
+          <ul class="text-mist space-y-3 mt-5">
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1 shrink-0"></i>Todo lo anterior.</li>
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1 shrink-0"></i>Google Maps integrado para que te ubiquen fácil.</li>
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1 shrink-0"></i>Hasta 10 secciones distintas en tu página.</li>
+          </ul>
+          <p class="text-sm text-dim mt-5">Con un costo un poco mayor.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 sm:mt-20">
+      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight">Para quién trabajamos</h3>
+      <div class="mt-8 grid md:grid-cols-3 border border-line rounded-xl overflow-hidden bg-panel">
+        <div class="cell-glow p-7 sm:p-9"><h4 class="font-bold text-xl">Emprendedores y tiendas locales</h4><p class="text-mist leading-relaxed mt-3">Negocios que buscan expandirse y necesitan un catálogo digital o una página con carrito de compras para mostrar sus productos y recibir pedidos directamente.</p></div>
+        <div class="cell-glow p-7 sm:p-9 md:border-l border-t md:border-t-0 border-line"><h4 class="font-bold text-xl">Microempresas de servicios o comercio</h4><p class="text-mist leading-relaxed mt-3">Restaurantes, panaderías o tiendas físicas que necesitan una página sencilla para que los clientes locales los ubiquen rápido, revisen su información y los contacten.</p></div>
+        <div class="cell-glow p-7 sm:p-9 md:border-l border-t md:border-t-0 border-line"><h4 class="font-bold text-xl">Profesionistas independientes</h4><p class="text-mist leading-relaxed mt-3">Doctores, abogados o consultores que atienden clientes constantemente y necesitan un sitio con sistema de agendamiento de citas para llevar el control de sus pendientes.</p></div>
+      </div>
+    </div>
+
+    <div class="mt-16 sm:mt-20">
+      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight">Cómo empezamos y hacia dónde vamos</h3>
+      <p class="mt-3 text-mist leading-relaxed max-w-2xl">Existen agencias con más trayectoria y un catálogo amplio de servicios. Por eso empezamos con un enfoque directo.</p>
+      <div class="mt-10 grid md:grid-cols-3 gap-x-8 gap-y-10 border-t-2 border-line pt-8">
+        <div><h4 class="font-bold text-xl">Especialización</h4><p class="text-mist leading-relaxed mt-2">Nos centramos en lo que mejor sabemos hacer: páginas web funcionales, catálogos digitales y sistemas de citas con excelente presentación.</p></div>
+        <div><h4 class="font-bold text-xl">Precios competitivos</h4><p class="text-mist leading-relaxed mt-2">Tarifas justas para los presupuestos de las microempresas campechanas, con trabajo de calidad y sin costos excesivos.</p></div>
+        <div><h4 class="font-bold text-xl">Crecimiento por etapas</h4><p class="text-mist leading-relaxed mt-2">Conforme ganemos la confianza del mercado local, iremos sumando servicios de diseño e identidad visual para ofrecer soluciones más completas.</p></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- PRECIOS -->
-<section id="precios" class="max-w-6xl mx-auto px-6 py-24">
+<section id="precios" class="max-w-6xl mx-auto px-6 py-16 sm:py-24">
   <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Precios claros</h2>
   <p class="mt-3 text-mist max-w-xl leading-relaxed">Sin letras chiquitas. El precio final se confirma en el brief según el alcance real.</p>
   <div class="mt-12 grid md:grid-cols-3 gap-5">
     <div class="card-glow border border-line rounded-xl p-8">
       <h3 class="text-mist">Presencia</h3>
-      <p class="font-bold text-4xl mt-2">desde ----<span class="text-base font-normal text-dim"> MXN</span></p>
+      <p class="font-bold text-3xl sm:text-4xl mt-2">desde ----<span class="text-base font-normal text-dim"> MXN</span></p>
       <p class="text-mist mt-2 mb-6">Página única, lista en 1–2 semanas.</p>
       <ul class="text-mist space-y-3">
         <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1"></i>Diseño a medida, responsivo</li>
@@ -168,7 +235,7 @@
     </div>
     <div class="card-glow border-2 border-sky bg-panel rounded-xl p-8">
       <h3 class="text-sky">Operación · Más elegido</h3>
-      <p class="font-bold text-4xl mt-2">desde ---- <span class="text-base font-normal text-dim"> MXN</span></p>
+      <p class="font-bold text-3xl sm:text-4xl mt-2">desde ---- <span class="text-base font-normal text-dim"> MXN</span></p>
       <p class="text-mist mt-2 mb-6">Tienda o sitio completo con base de datos.</p>
       <ul class="text-mist space-y-3">
         <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1"></i>Todo lo de Presencia</li>
@@ -178,7 +245,7 @@
     </div>
     <div class="card-glow border border-line rounded-xl p-8">
       <h3 class="text-mist">A medida</h3>
-      <p class="font-bold text-4xl mt-2">cotización</p>
+      <p class="font-bold text-3xl sm:text-4xl mt-2">cotización</p>
       <p class="text-mist mt-2 mb-6">Sistemas con varios paneles y roles.</p>
       <ul class="text-mist space-y-3">
         <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-sky mt-1"></i>Todo lo de Operación</li>
@@ -191,7 +258,7 @@
 
 <!-- CONTACTO -->
 <section id="contacto" class="bg-panel border-t border-line">
-  <div class="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-14">
+  <div class="max-w-6xl mx-auto px-6 py-16 sm:py-24 grid md:grid-cols-2 gap-14">
     <div>
       <h2 class="text-4xl sm:text-5xl font-bold tracking-[-0.025em]">Cuéntanos tu proyecto</h2>
       <p class="mt-3 text-mist leading-relaxed max-w-md">Respondemos en menos de 24 horas hábiles con los siguientes pasos y un rango de tiempo real.</p>
@@ -223,7 +290,7 @@
 
 <footer class="border-t border-line">
   <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-dim">
-    <p>© 2026 Altus Code.</p>
+    <p>© 2026 Altus Code · Diseñamos hoy la web donde estará tu futuro.</p>
     <a href="dashboard.html" id="footer-acceso-clientes" class="hover:text-snow transition-colors">Acceso para clientes</a>
   </div>
 </footer>
