@@ -45,6 +45,11 @@
   a.border.border-line, button.border.border-line { transition: border-color .2s, box-shadow .2s; }
   a.border.border-line:hover, button.border.border-line:hover { border-color: #3BBCF6; box-shadow: 0 0 18px rgba(59,188,246,.35); }
   @media (prefers-reduced-motion: reduce) { .card-glow, .cell-glow, a, button { transition: none !important; } }
+  /* Logo girando (eje vertical) */
+  .logo-spin-wrap { perspective: 800px; }
+  .logo-spin { animation: logoSpin 8s linear infinite; transform-style: preserve-3d; filter: drop-shadow(0 0 22px rgba(59,188,246,.35)); }
+  @keyframes logoSpin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .logo-spin { animation: none; } }
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid #3BBCF6; outline-offset: 2px; }
 </style>
 </head>
@@ -168,7 +173,12 @@
     </div>
 
     <div class="mt-16 sm:mt-20 grid lg:grid-cols-[1fr_1.4fr] gap-6 lg:gap-14">
-      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight">Nuestra visión</h3>
+      <div>
+        <h3 class="text-2xl sm:text-3xl font-bold tracking-tight">Nuestra visión</h3>
+        <div class="logo-spin-wrap mt-8 inline-block">
+          <img src="img/logo-icono.png" alt="" aria-hidden="true" class="logo-spin w-28 h-28 sm:w-32 sm:h-32">
+        </div>
+      </div>
       <p class="text-mist text-lg leading-relaxed">Hoy la tecnología es indispensable para automatizar tareas, consultar menús o agendar citas, y muchos negocios campechanos no logran dar a conocer lo que ofrecen. Buscamos precios accesibles y ajustables para pequeños, medianos y grandes empresarios, para que sus empresas den un salto económico y ayuden a expandir el comercio campechano.</p>
     </div>
 
