@@ -261,7 +261,14 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo, password: pass })
       });
-      if (!res.ok) { err.textContent = 'Correo o contraseña incorrectos.'; err.classList.remove('hidden'); return; }
+      if (!res.ok) {
+        let msg = 'Correo o contraseña incorrectos.';
+        if (res.status !== 401) {
+          const d = await res.json().catch(() => ({}));
+          msg = 'Error del servidor (' + res.status + '): ' + (d.error || 'revisa los logs en Vercel.');
+        }
+        err.textContent = msg; err.classList.remove('hidden'); return;
+      }
       sesion = await res.json();
       sessionStorage.setItem('sesion_admin', JSON.stringify(sesion));
       abrirPanel();

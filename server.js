@@ -45,6 +45,20 @@ db.query(`CREATE TABLE IF NOT EXISTS admins (
     password VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`).then(async () => {
+    // Si defines ADMIN_EMAIL y ADMIN_PASSWORD en las variables de entorno,
+    // ese admin se crea (o se le restablece la contraseña) en cada arranque.
+    const envCorreo = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+    const envPass = process.env.ADMIN_PASSWORD || '';
+    if (envCorreo && envPass) {
+        const hash = await bcrypt.hash(envPass, 10);
+        await db.query(
+            `INSERT INTO admins (nombre, correo, password) VALUES (?,?,?)
+             ON DUPLICATE KEY UPDATE password=VALUES(password)`,
+            ['Administrador', envCorreo, hash]
+        );
+        console.log('✅ Admin configurado desde variables de entorno: ' + envCorreo);
+        return;
+    }
     const [rows] = await db.query('SELECT COUNT(*) as count FROM admins');
     if (rows[0].count === 0) {
         // ⚠️ Cambia esta contraseña por una tuya en cuanto entres por primera vez.
@@ -55,7 +69,7 @@ db.query(`CREATE TABLE IF NOT EXISTS admins (
         );
         console.log('✅ Admin por defecto creado: admin@nucleoweb.mx / admin123');
     }
-}).catch(err => console.error('Error creando tabla admins:', err));
+}).catch(err => console.error('Error creando tabla/admin:', err));
 
 db.query(`CREATE TABLE IF NOT EXISTS clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -95,7 +109,7 @@ app.post('/api/login-admin', async (req, res) => {
         if (!correo || !password) return res.status(400).json({ error: 'Faltan datos' });
         const [rows] = await db.query(
             'SELECT id, nombre, correo, password FROM admins WHERE correo=?',
-            [correo]
+            [correo.trim().toLowerCase()]
         );
         if (rows.length === 0) return res.status(401).json({ error: 'Credenciales incorrectas' });
         const admin = rows[0];
